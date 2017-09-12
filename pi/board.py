@@ -1,3 +1,32 @@
+class PieceType:
+    """
+    Enum representing all the different types of pieces
+    """
+
+    KING = 0
+    QUEEN = 1
+    ROOK = 2
+    KNIGHT = 3
+    BISHOP = 4
+    PAWN = 5
+
+
+class Piece:
+    """
+    Represents the state of a piece on a Board
+    """
+
+    def __init__(self, piece_type, is_black):
+        """
+        Init
+        :param piece_type: The type of piece, should be one of PieceType
+        :param is_black: True if the piece is black, False if the piece is white
+        """
+        self.piece_type = piece_type
+        self.is_black = is_black
+        self.moved = False
+
+
 class Board:
     """
     The Board data structure
