@@ -5,6 +5,10 @@ active_piece = None
 active_location = None
 
 
+def calculate_highlighting():
+    pass
+
+
 def toggle_piece(coord):
     """
     Event: A piece was lifted or set down at the specified coordinate
@@ -24,6 +28,7 @@ def toggle_piece(coord):
         if active_piece is None:
             active_piece = chess_board.remove_piece(coord)
             active_location = coord
+            calculate_highlighting()
         else:
             raise Exception("Second piece picked up")
     else:
