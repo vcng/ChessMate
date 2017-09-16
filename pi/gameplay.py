@@ -19,7 +19,10 @@ def toggle_piece(coord):
 
     # If there was already a piece here, this must be a lift event
     if chess_board[coord] is not None:
-        active_piece = chess_board.remove_piece(coord)
+        if active_piece is None:
+            active_piece = chess_board.remove_piece(coord)
+        else:
+            raise Exception("Second piece picked up")
     else:
         # Otherwise, this must be a set down event
         # Ensure that there is an active piece
