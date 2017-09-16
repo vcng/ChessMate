@@ -27,6 +27,40 @@ class Piece:
         self.moved = False
 
 
+def create_starting_layout():
+    """
+    Create a new starting board layout with all pieces in their correct
+    starting positions
+    :return: A 2d array of pieces
+    """
+    return [
+        [
+            Piece(PieceType.ROOK, False), Piece(PieceType.KNIGHT, False), Piece(PieceType.BISHOP, False),
+            Piece(PieceType.KING, False), Piece(PieceType.QUEEN, False), Piece(PieceType.BISHOP, False),
+            Piece(PieceType.KNIGHT, False), Piece(PieceType.ROOK, False)
+        ],
+        [
+            Piece(PieceType.PAWN, False), Piece(PieceType.PAWN, False), Piece(PieceType.PAWN, False),
+            Piece(PieceType.PAWN, False), Piece(PieceType.PAWN, False), Piece(PieceType.PAWN, False),
+            Piece(PieceType.PAWN, False), Piece(PieceType.PAWN, False)
+        ],
+        [None] * 8,
+        [None] * 8,
+        [None] * 8,
+        [None] * 8,
+        [
+            Piece(PieceType.PAWN, True), Piece(PieceType.PAWN, True), Piece(PieceType.PAWN, True),
+            Piece(PieceType.PAWN, True), Piece(PieceType.PAWN, True), Piece(PieceType.PAWN, True),
+            Piece(PieceType.PAWN, True), Piece(PieceType.PAWN, True)
+        ],
+        [
+            Piece(PieceType.ROOK, True), Piece(PieceType.KNIGHT, True), Piece(PieceType.BISHOP, True),
+            Piece(PieceType.KING, True), Piece(PieceType.QUEEN, True), Piece(PieceType.BISHOP, True),
+            Piece(PieceType.KNIGHT, True), Piece(PieceType.ROOK, True)
+        ],
+    ]
+
+
 class Board:
     """
     The Board data structure
@@ -38,6 +72,13 @@ class Board:
         self.board = []
         for _ in range(0, 8):
             self.board.append([None] * 8)
+
+    def reset(self):
+        """
+        Reset the board to a valid starting state
+        :return: None
+        """
+        self.board = create_starting_layout()
 
     def remove_piece(self, coord):
         """
