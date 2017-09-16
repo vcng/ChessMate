@@ -2,6 +2,7 @@ from board import Board
 
 chess_board = Board()
 active_piece = None
+active_location = None
 
 
 def toggle_piece(coord):
@@ -12,6 +13,7 @@ def toggle_piece(coord):
     """
     global chess_board
     global active_piece
+    global active_location
 
     row, col = coord[0], coord[1]
     if row < 0 or row > 7 or col < 0 or col > 7:
@@ -21,6 +23,7 @@ def toggle_piece(coord):
     if chess_board[coord] is not None:
         if active_piece is None:
             active_piece = chess_board.remove_piece(coord)
+            active_location = coord
         else:
             raise Exception("Second piece picked up")
     else:
@@ -30,6 +33,7 @@ def toggle_piece(coord):
             # Set down the active piece at the given location
             chess_board.set_piece(coord, active_piece)
             active_piece = None
+            active_location = None
         else:
             raise Exception("Attempted to set down a piece before piece was selected")
 
