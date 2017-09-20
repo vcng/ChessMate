@@ -8,10 +8,8 @@ class Protocol():
 
         while True:
             self.ser.write('start')
-            if self.ser.available():
-                r = self.ser.readline()
-                if r == 'go':
-                    break
+            if self.__received():
+                break
 
     def listen(self):
         cmd = self.__listener()
@@ -19,14 +17,10 @@ class Protocol():
 
         cmd = cmd_list[0]
 
-        if cmd == 'go':
-            pass
-            #do something
-        elif cmd == 'tog':
-            pass
-            #do something, call toggle_piece from game play interface which returns a list
+        if cmd == 'tog':
+            return (cmd[1], cmd[2])         #retrun the toggled coord
 
-        return
+        return (-2,-2)                      #recieved input not valid, send error code
 
     def __listener(self):
         while True:
@@ -35,18 +29,67 @@ class Protocol():
                 break
         return input
 
+    def __received(self):
+        for x in range(0,50):
+            if self.ser.available():
+                input = self.ser.available
+                if input == 'go':
+                    return True
+        return False
+
+    def __received(self, debug):
+
+        return
+
+
     def __init_arduino(self):
         #initialize the arduino
-        return
+        self.ser.write('init')
+        if self.__received():
+            return True
+        return False
 
 
-    def led_on(self, color, loc):
+    def __led_on(self, loc):
         #send an led cmd to arduino
+        self.ser.write('led 1 ' + loc[0] + ' ' + loc[1])    # led 1 r c -> means led 1 = on, r = row, c = col
+
+        #wait for a response
+        if self.__received():
+            return True
+        return False
+
+
+    def __led_off(self, loc):
+        #send a shut off led cmd to arduino
+        self.ser.write('led 0 ' + loc[0] + ' ' + loc[1])    # led 0 r c -> means led 0 = off, r = row, c = col
+
+        # wait for a response
+        if self.__received():
+            return True
+        return False
+
+    def invalid_move(self, loc):
+
         return
 
-    def led_off(self, loc):
-        #send a shut off led cmd to arduino
-        return
+    def show_moves(self, *loc):
+        for coord in range(0, len(loc)):
+            if self.__led_on((coord[0],coord[1])):
+                continue
+            else:
+                return False                #broke along the way try again
+        return True                         #leds on, return
+
+    def reset_arduino(self):
+        self.ser.write('reset')
+        if self.__received():
+            self.__init_arduino()
+            if self.__received():
+                return True
+        return False
+
+
 
 
 
