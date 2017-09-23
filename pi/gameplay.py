@@ -17,15 +17,11 @@ active_location = None
 state = State.GAME_STARTING
 
 
-def __calculate_highlighting():
-    pass
-
-
 def toggle_piece(coord):
     """
     Event: A piece was lifted or set down at the specified coordinate
     :param coord: A 2-tuple representing the (row, col) coordinate on the board
-    :return: None
+    :return: An array - The first index is the command, the second is the parameters (Ex: turn_on, [(1, 1), (2, 3)]
     """
     global chess_board
     global active_piece
@@ -42,7 +38,7 @@ def toggle_piece(coord):
         if active_piece is None:
             active_piece = chess_board.remove_piece(coord)
             active_location = coord
-            __calculate_highlighting()
+            return ['turn_on', active_piece.get_moves(active_location, chess_board)]
         else:
             raise Exception("Second piece picked up")
     else:
@@ -53,8 +49,13 @@ def toggle_piece(coord):
         if active_piece is not None:
             # Set down the active piece at the given location
             chess_board.set_piece(coord, active_piece)
+
+            positions = active_piece.get_moves(active_location, chess_board)
+
             active_piece = None
             active_location = None
+
+            return ['turn_off', positions]
         else:
             raise Exception("Attempted to set down a piece before piece was selected")
 
