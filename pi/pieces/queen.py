@@ -45,6 +45,7 @@ class Queen:
             else:
                 break
 
+        # Loop to add spaces below and to the right of the bishop
         for off in range(1, 8):
             new_r = r + off
             new_c = c + off
@@ -58,6 +59,7 @@ class Queen:
             else:
                 break
 
+        # Loop to add spaces below and to the left of the bishop
         for off in range(1, 8):
             new_r = r - off
             new_c = c + off
@@ -72,6 +74,7 @@ class Queen:
             else:
                 break
 
+        # Loop to add spaces above and to the right of the bishop
         for off in range(1, 8):
             new_r = r + off
             new_c = c - off
@@ -85,6 +88,7 @@ class Queen:
             else:
                 break
 
+        # Loop to add spaces above and to the left of the bishop
         for off in range(1, 8):
             new_r = r - off
             new_c = c - off

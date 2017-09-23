@@ -13,20 +13,35 @@ class King:
         valid_locs = []
         r, c = cord[0], cord[1]
 
+        # down
         if Board.is_valid_location((r + 1, c)):
             valid_locs.append((r + 1, c))
+
+        # right down
         if Board.is_valid_location((r + 1, c + 1)):
             valid_locs.append((r + 1, c + 1))
+
+        # right
         if Board.is_valid_location((r, c + 1)):
             valid_locs.append((r, c + 1))
+
+        # right up
         if Board.is_valid_location((r - 1, c + 1)):
             valid_locs.append((r - 1, c + 1))
+
+        # up
         if Board.is_valid_location((r - 1, c)):
             valid_locs.append((r - 1, c))
+
+        # left up
         if Board.is_valid_location((r - 1, c - 1)):
             valid_locs.append((r - 1, c - 1))
+
+        # left
         if Board.is_valid_location((r, c - 1)):
             valid_locs.append((r, c - 1))
+
+        # left down
         if Board.is_valid_location((r + 1, c - 1)):
             valid_locs.append((r + 1, c - 1))
 

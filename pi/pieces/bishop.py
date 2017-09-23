@@ -13,6 +13,7 @@ class Bishop:
         valid_locs = []
         r, c = cord[0], cord[1]
 
+        # Loop to add spaces below and to the right of the bishop
         for off in range(1, 8):
             new_r = r + off
             new_c = c + off
@@ -26,6 +27,7 @@ class Bishop:
             else:
                 break
 
+        # Loop to add spaces below and to the left of the bishop
         for off in range(1, 8):
             new_r = r - off
             new_c = c + off
@@ -40,6 +42,7 @@ class Bishop:
             else:
                 break
 
+        # Loop to add spaces above and to the right of the bishop
         for off in range(1, 8):
             new_r = r + off
             new_c = c - off
@@ -53,6 +56,7 @@ class Bishop:
             else:
                 break
 
+        # Loop to add spaces above and to the left of the bishop
         for off in range(1, 8):
             new_r = r - off
             new_c = c - off
