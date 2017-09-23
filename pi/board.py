@@ -26,6 +26,21 @@ class Piece:
         self.is_black = is_black
         self.moved = False
 
+    def __str__(self):
+        symbol = {
+            PieceType.KING: 'K',
+            PieceType.QUEEN: 'Q',
+            PieceType.ROOK: 'R',
+            PieceType.KNIGHT: 'H',
+            PieceType.BISHOP: 'B',
+            PieceType.PAWN: 'P'
+        }[self.piece_type] or '?'
+
+        if not self.is_black:
+            symbol = symbol.lower()
+
+        return symbol
+
 
 def create_starting_layout():
     """
@@ -120,3 +135,9 @@ class Board:
         :return: None
         """
         self.set_piece(coord, piece)
+
+    def __str__(self):
+        output = ""
+        for row in self.board:
+            output += ' | '.join([str(piece or ' ') for piece in row]) + "\n"
+        return output
