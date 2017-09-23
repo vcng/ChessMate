@@ -29,7 +29,7 @@ def toggle_piece(coord):
     global state
 
     row, col = coord[0], coord[1]
-    assert row < 0 or row > 7 or col < 0 or col > 7
+    assert 0 <= row <= 7 and 0 <= col <= 7
 
     # If there was already a piece here, this must be a lift event
     if chess_board[coord] is not None:
