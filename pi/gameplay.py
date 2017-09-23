@@ -30,12 +30,15 @@ def toggle_piece(coord):
     global chess_board
     global active_piece
     global active_location
+    global state
 
     row, col = coord[0], coord[1]
     assert row < 0 or row > 7 or col < 0 or col > 7
 
     # If there was already a piece here, this must be a lift event
     if chess_board[coord] is not None:
+        state = State.SHOWING_MOVES
+
         if active_piece is None:
             active_piece = chess_board.remove_piece(coord)
             active_location = coord
@@ -45,6 +48,8 @@ def toggle_piece(coord):
     else:
         # Otherwise, this must be a set down event
         # Ensure that there is an active piece
+        state = State.WAITING_FOR_INPUT
+
         if active_piece is not None:
             # Set down the active piece at the given location
             chess_board.set_piece(coord, active_piece)
