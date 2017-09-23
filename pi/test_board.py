@@ -22,6 +22,13 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(b[(0, 0)].piece_type, board.PieceType.ROOK)
         self.assertEqual(b[(7, 7)].piece_type, board.PieceType.ROOK)
 
+    def test_get_moves_pawn(self):
+        b = board.Board()
+        b.reset()
+        pawn = b.remove_piece((1, 1))
+        self.assertEqual(pawn.piece_type, board.PieceType.PAWN)
+        self.assertEqual(set(pawn.get_moves((1, 1), b)), {(2, 1), (3, 1)})
+
 
 if __name__ == "__main__":
     unittest.main()
