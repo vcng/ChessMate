@@ -105,6 +105,11 @@ class Board:
     set pieces down and take pieces off
     """
 
+    @staticmethod
+    def is_valid_location(coord):
+        row, col = coord[0], coord[1]
+        return 0 <= row <= 7 and 0 <= col <= 7
+
     def __init__(self):
         self.board = []
         for _ in range(0, 8):
