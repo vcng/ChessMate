@@ -42,7 +42,7 @@ class Piece:
             PieceType.KNIGHT: Knight,
             PieceType.BISHOP: Bishop,
             PieceType.PAWN: Pawn
-        }[self.piece_type](coord, self, chess_board)
+        }[self.piece_type].get_moves(coord, self, chess_board)
 
     def __str__(self):
         """
@@ -72,28 +72,28 @@ def create_starting_layout():
     """
     return [
         [
-            Piece(PieceType.ROOK, False), Piece(PieceType.KNIGHT, False), Piece(PieceType.BISHOP, False),
-            Piece(PieceType.KING, False), Piece(PieceType.QUEEN, False), Piece(PieceType.BISHOP, False),
-            Piece(PieceType.KNIGHT, False), Piece(PieceType.ROOK, False)
+            Piece(PieceType.ROOK, True), Piece(PieceType.KNIGHT, True), Piece(PieceType.BISHOP, True),
+            Piece(PieceType.KING, True), Piece(PieceType.QUEEN, True), Piece(PieceType.BISHOP, True),
+            Piece(PieceType.KNIGHT, True), Piece(PieceType.ROOK, True)
         ],
-        [
-            Piece(PieceType.PAWN, False), Piece(PieceType.PAWN, False), Piece(PieceType.PAWN, False),
-            Piece(PieceType.PAWN, False), Piece(PieceType.PAWN, False), Piece(PieceType.PAWN, False),
-            Piece(PieceType.PAWN, False), Piece(PieceType.PAWN, False)
-        ],
-        [None] * 8,
-        [None] * 8,
-        [None] * 8,
-        [None] * 8,
         [
             Piece(PieceType.PAWN, True), Piece(PieceType.PAWN, True), Piece(PieceType.PAWN, True),
             Piece(PieceType.PAWN, True), Piece(PieceType.PAWN, True), Piece(PieceType.PAWN, True),
             Piece(PieceType.PAWN, True), Piece(PieceType.PAWN, True)
         ],
+        [None] * 8,
+        [None] * 8,
+        [None] * 8,
+        [None] * 8,
         [
-            Piece(PieceType.ROOK, True), Piece(PieceType.KNIGHT, True), Piece(PieceType.BISHOP, True),
-            Piece(PieceType.KING, True), Piece(PieceType.QUEEN, True), Piece(PieceType.BISHOP, True),
-            Piece(PieceType.KNIGHT, True), Piece(PieceType.ROOK, True)
+            Piece(PieceType.PAWN, False), Piece(PieceType.PAWN, False), Piece(PieceType.PAWN, False),
+            Piece(PieceType.PAWN, False), Piece(PieceType.PAWN, False), Piece(PieceType.PAWN, False),
+            Piece(PieceType.PAWN, False), Piece(PieceType.PAWN, False)
+        ],
+        [
+            Piece(PieceType.ROOK, False), Piece(PieceType.KNIGHT, False), Piece(PieceType.BISHOP, False),
+            Piece(PieceType.KING, False), Piece(PieceType.QUEEN, False), Piece(PieceType.BISHOP, False),
+            Piece(PieceType.KNIGHT, False), Piece(PieceType.ROOK, False)
         ],
     ]
 
