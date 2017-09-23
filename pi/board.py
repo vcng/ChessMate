@@ -171,7 +171,7 @@ class Board:
         String conversion override
         :return: String representation of the board
         """
-        output = ""
-        for row in self.board:
-            output += ' | '.join([str(piece or ' ') for piece in row]) + "\n"
+        output = "\t0   1   2   3   4   5   6   7\n"
+        for i, row in enumerate(self.board):
+            output += str(i) + '\t' + ' | '.join([str(piece or ' ') for piece in row]) + "\n"
         return output
