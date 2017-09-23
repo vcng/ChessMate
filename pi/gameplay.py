@@ -1,11 +1,23 @@
 from board import Board
 
+
+class State:
+    """
+    The logical states of the game
+    """
+    GAME_STARTING = 0
+    WAITING_FOR_INPUT = 1
+    SHOWING_MOVES = 2
+
+
+# Game data
 chess_board = Board()
 active_piece = None
 active_location = None
+state = State.GAME_STARTING
 
 
-def calculate_highlighting():
+def __calculate_highlighting():
     pass
 
 
@@ -20,15 +32,14 @@ def toggle_piece(coord):
     global active_location
 
     row, col = coord[0], coord[1]
-    if row < 0 or row > 7 or col < 0 or col > 7:
-        raise Exception("Coordinate out of bounds (%s, %s)" % coord)
+    assert row < 0 or row > 7 or col < 0 or col > 7
 
     # If there was already a piece here, this must be a lift event
     if chess_board[coord] is not None:
         if active_piece is None:
             active_piece = chess_board.remove_piece(coord)
             active_location = coord
-            calculate_highlighting()
+            __calculate_highlighting()
         else:
             raise Exception("Second piece picked up")
     else:
@@ -49,5 +60,7 @@ def start():
     :return: None
     """
     global chess_board
+    global state
 
     chess_board.reset()
+    state = State.WAITING_FOR_INPUT
