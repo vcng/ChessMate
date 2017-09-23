@@ -1,3 +1,11 @@
+from pieces.king import King
+from pieces.queen import Queen
+from pieces.rook import Rook
+from pieces.knight import Knight
+from pieces.bishop import Bishop
+from pieces.pawn import Pawn
+
+
 class PieceType:
     """
     Enum representing all the different types of pieces
@@ -28,12 +36,12 @@ class Piece:
 
     def get_moves(self, coord, chess_board):
         return {
-            PieceType.KING: None,
-            PieceType.QUEEN: None,
-            PieceType.ROOK: None,
-            PieceType.KNIGHT: None,
-            PieceType.BISHOP: None,
-            PieceType.PAWN: None
+            PieceType.KING: King,
+            PieceType.QUEEN: Queen,
+            PieceType.ROOK: Rook,
+            PieceType.KNIGHT: Knight,
+            PieceType.BISHOP: Bishop,
+            PieceType.PAWN: Pawn
         }[self.piece_type](coord, self, chess_board)
 
     def __str__(self):
