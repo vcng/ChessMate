@@ -38,7 +38,7 @@ def toggle_piece(coord):
         if active_piece is None:
             active_piece = chess_board.remove_piece(coord)
             active_location = coord
-            return ['turn_on', active_piece.get_moves(active_location, chess_board)]
+            return ['on', active_piece.get_moves(active_location, chess_board)]
         else:
             raise Exception("Second piece picked up")
     else:
@@ -55,7 +55,7 @@ def toggle_piece(coord):
             active_piece = None
             active_location = None
 
-            return ['turn_off', positions]
+            return ['off', positions]
         else:
             raise Exception("Attempted to set down a piece before piece was selected")
 
