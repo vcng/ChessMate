@@ -7,7 +7,7 @@ from pieces.pawn import Pawn
 from pieces.bishop import Bishop
 
 chessB = Board()
-chessB.reset()
+# chessB.reset()    # places pieces on board
 
 K = King()
 Kn = Knight()
@@ -29,34 +29,48 @@ locations = []
 # print(Bishop.get_moves((7, 7), None, chessB))
 # print(Bishop.get_moves((3, 5), None, chessB))
 
-locations = King.get_moves((4, 6), K, chessB)
-locations = King.get_moves((5, 5), K, chessB)
-locations = King.get_moves((6, 8), K, chessB)
+print(King.get_moves((4, 6), K, chessB))
+print(King.get_moves((5, 5), K, chessB))
+print(King.get_moves((6, 8), K, chessB))
+print(King.get_moves((0, 0), K, chessB))
 
-locations = Knight.get_moves((5, 5), Kn, chessB)
-locations = Knight.get_moves((3, 4), Kn, chessB)
-locations = Knight.get_moves((6, 3), Kn, chessB)
+print("----------------------------------")
 
-locations = Queen.get_moves((4, 4), Q, chessB)
-locations = Queen.get_moves((2, 1), Q, chessB)
-locations = Queen.get_moves((7, 7), Q, chessB)
+print(Knight.get_moves((5, 5), Kn, chessB))
+print(Knight.get_moves((3, 4), Kn, chessB))
+print(Knight.get_moves((6, 3), Kn, chessB))
 
-locations = Rook.get_moves((4, 4), Q, chessB)
-locations = Rook.get_moves((2, 1), Q, chessB)
-locations = Rook.get_moves((7, 7), Q, chessB)
+print("----------------------------------")
+
+print(Queen.get_moves((4, 4), Q, chessB))
+print(Queen.get_moves((2, 1), Q, chessB))
+print(Queen.get_moves((7, 7), Q, chessB))
+
+print("----------------------------------")
+
+print(Rook.get_moves((4, 4), Q, chessB))
+print(Rook.get_moves((2, 1), Q, chessB))
+print(Rook.get_moves((7, 7), Q, chessB))
+
+print("----------------------------------")
 
 print(Pawn.get_moves((1, 0), P1, chessB))
 print(Pawn.get_moves((1, 1), P2, chessB))
 print(Pawn.get_moves((1, 2), P3, chessB))
 print(Pawn.get_moves((1, 3), P4, chessB))
 
+print("----------------------------------")
+
 print(Pawn.get_moves((6, 0), P1, chessB))
 print(Pawn.get_moves((1, 1), P2, chessB))
 print(Pawn.get_moves((6, 4), P3, chessB))
 print(Pawn.get_moves((1, 7), P4, chessB))
+
+print("----------------------------------")
 
 print(Pawn.get_moves((6, 0), P4, chessB))
 print(Pawn.get_moves((1, 1), P3, chessB))
 print(Pawn.get_moves((6, 4), P2, chessB))
 print(Pawn.get_moves((1, 7), P1, chessB))
 
+print(Pawn.get_moves((7, 7), P4, chessB))

@@ -1,3 +1,6 @@
+from board import Board
+
+
 class Rook:
     @staticmethod
     def get_moves(cord, piece, chess_board):

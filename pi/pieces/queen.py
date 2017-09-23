@@ -1,3 +1,6 @@
+from board import Board
+
+
 class Queen:
     @staticmethod
     def get_moves(cord, piece, chess_board):
