@@ -171,7 +171,16 @@ class Board:
         String conversion override
         :return: String representation of the board
         """
-        output = ""
-        for row in self.board:
-            output += ' | '.join([str(piece or ' ') for piece in row]) + "\n"
+        return self.get_string_representation([])
+
+    def get_string_representation(self, highlighted_coords):
+        output = "\t  0   1   2   3   4   5   6   7\n"
+        for i, row in enumerate(self.board):
+            output += str(i) + '\t|'
+            for j, piece in enumerate(row):
+                if (i, j) in highlighted_coords:
+                    output += '[' + str(piece or ' ') + ']|'
+                else:
+                    output += ' ' + str(piece or ' ') + ' |'
+            output += '\n'
         return output
