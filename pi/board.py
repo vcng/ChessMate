@@ -27,6 +27,10 @@ class Piece:
         self.moved = False
 
     def __str__(self):
+        """
+        String conversion override
+        :return: String representation of the piece
+        """
         symbol = {
             PieceType.KING: 'K',
             PieceType.QUEEN: 'Q',
@@ -137,6 +141,10 @@ class Board:
         self.set_piece(coord, piece)
 
     def __str__(self):
+        """
+        String conversion override
+        :return: String representation of the board
+        """
         output = ""
         for row in self.board:
             output += ' | '.join([str(piece or ' ') for piece in row]) + "\n"
