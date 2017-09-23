@@ -1,4 +1,4 @@
-from board import Board
+from util import *
 
 
 class Pawn:
@@ -17,22 +17,21 @@ class Pawn:
         if piece.is_black:
 
             # check locations on board in front of it to make sure its a valid spot to move
-            if Board.is_valid_location((r + 1, c)) and chess_board[(r + 1, c)] is None:
+            if is_valid_location((r + 1, c)) and chess_board[(r + 1, c)] is None:
                 valid_locs.append((r + 1, c))
 
                 # if the piece has not been already moved it can move forward twice
-                if Board.is_valid_location((r + 2, c)) and chess_board[(r + 2, c)] is None and not piece.moved:
+                if is_valid_location((r + 2, c)) and chess_board[(r + 2, c)] is None and not piece.moved:
                     valid_locs.append((r + 2, c))
 
         # if piece is white it starts on bottom of board and moves up
         else:
-
             # check locations on board in front of it to make sure its a valid spot to move
-            if Board.is_valid_location((r - 1, c)) and chess_board[(r - 1, c)] is None:
+            if is_valid_location((r - 1, c)) and chess_board[(r - 1, c)] is None:
                 valid_locs.append((r - 1, c))
 
                 # if the piece has not been already moved it can move forward twice
-                if Board.is_valid_location((r - 2, c)) and chess_board[(r - 2, c)] is None and not piece.moved:
+                if is_valid_location((r - 2, c)) and chess_board[(r - 2, c)] is None and not piece.moved:
                     valid_locs.append((r - 2, c))
 
         return valid_locs
