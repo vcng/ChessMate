@@ -1,4 +1,4 @@
-from board import Board
+from util import *
 
 
 class Knight:
@@ -13,21 +13,21 @@ class Knight:
         valid_locs = []
         r, c = cord[0], cord[1]
 
-        if Board.is_valid_location((r + 2, c + 1)):
+        if is_valid_location((r + 2, c + 1)):
             valid_locs.append((r + 2, c + 1))
-        if Board.is_valid_location((r + 1, c + 2)):
+        if is_valid_location((r + 1, c + 2)):
             valid_locs.append((r + 1, c + 2))
-        if Board.is_valid_location((r - 1, c + 2)):
+        if is_valid_location((r - 1, c + 2)):
             valid_locs.append((r - 1, c + 2))
-        if Board.is_valid_location((r - 2, c + 1)):
+        if is_valid_location((r - 2, c + 1)):
             valid_locs.append((r - 2, c + 1))
-        if Board.is_valid_location((r - 2, c - 1)):
+        if is_valid_location((r - 2, c - 1)):
             valid_locs.append((r - 2, c - 1))
-        if Board.is_valid_location((r - 1, c - 2)):
+        if is_valid_location((r - 1, c - 2)):
             valid_locs.append((r - 1, c - 2))
-        if Board.is_valid_location((r + 1, c - 2)):
+        if is_valid_location((r + 1, c - 2)):
             valid_locs.append((r + 1, c - 2))
-        if Board.is_valid_location((r + 2, c - 1)):
+        if is_valid_location((r + 2, c - 1)):
             valid_locs.append((r + 2, c - 1))
 
         return valid_locs
