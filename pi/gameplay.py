@@ -21,7 +21,7 @@ def toggle_piece(coord):
     """
     Event: A piece was lifted or set down at the specified coordinate
     :param coord: A 2-tuple representing the (row, col) coordinate on the board
-    :return: An array - The first index is the command, the second is the parameters (Ex: turn_on, [(1, 1), (2, 3)]
+    :return: An array - The first index is the command, the second is the parameters (Ex: [on, [(1, 1), (2, 3)])
     """
     global chess_board
     global active_piece
