@@ -27,7 +27,7 @@ while True:
 
     while True:
         try:
-            row = int(input('Enter the row: '))
+            row = int(input('Enter the row (-1 to exit): '))
         except Exception:
             print('Invalid value, try again')
             continue
@@ -36,7 +36,7 @@ while True:
             exit(0)
 
         try:
-            col = int(input('Enter the column: '))
+            col = int(input('Enter the column (-1 to exit): '))
         except Exception:
             print('Invalid value, try again')
             continue
@@ -45,7 +45,7 @@ while True:
             exit(0)
 
         if not util.is_valid_location((row, col)) or gameplay.chess_board[(row, col)] is None:
-            print('There is no piece at this location. Please try again.')
+            print('There is no piece at this location. Please try again.\n')
             continue
 
         moves = gameplay.toggle_piece((row, col))[1]
@@ -60,7 +60,7 @@ while True:
 
     while True:
         try:
-            row = int(input('Enter the row: '))
+            row = int(input('Enter the row (-1 to exit): '))
         except Exception:
             print('Invalid value, try again')
             continue
@@ -69,7 +69,7 @@ while True:
             exit(0)
 
         try:
-            col = int(input('Enter the column: '))
+            col = int(input('Enter the column (-1 to exit): '))
         except Exception:
             print('Invalid value, try again')
             continue
@@ -78,7 +78,7 @@ while True:
             exit(0)
 
         if not util.is_valid_location((row, col)) or gameplay.chess_board[(row, col)] is not None:
-            print('There is a piece at this location, or the coordinate is out of bounds. Please try again.')
+            print('There is a piece at this location, or the coordinate is out of bounds. Please try again.\n')
             continue
 
         gameplay.toggle_piece((row, col))
