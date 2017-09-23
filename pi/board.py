@@ -26,6 +26,16 @@ class Piece:
         self.is_black = is_black
         self.moved = False
 
+    def get_moves(self, coord, chess_board):
+        return {
+            PieceType.KING: None,
+            PieceType.QUEEN: None,
+            PieceType.ROOK: None,
+            PieceType.KNIGHT: None,
+            PieceType.BISHOP: None,
+            PieceType.PAWN: None
+        }[self.piece_type](coord, self, chess_board)
+
     def __str__(self):
         """
         String conversion override
