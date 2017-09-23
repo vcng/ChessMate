@@ -28,25 +28,14 @@ while True:
             print('There is no piece at this location. Please try again.')
             continue
 
-        moves = gameplay.toggle_piece((row, col))
+        moves = gameplay.toggle_piece((row, col))[1]
 
-        print('Possible legal moves:', moves[1])
+        print('Possible legal moves:', moves)
 
         break
 
     print()
-    print(gameplay.chess_board)
-
-    build = "\t 0  1  2  3  4  5  6  7\n"
-    for i, row in enumerate(range(0, 8)):
-        build += str(i) + "\t"
-        for col in range(0, 8):
-            if (row, col) in moves[1]:
-                build += " O "
-            else:
-                build += " . "
-        build += "\n"
-    print(build)
+    print(gameplay.chess_board.get_string_representation(moves))
 
     while True:
         try:
