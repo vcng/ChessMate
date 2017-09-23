@@ -115,6 +115,8 @@ class Board:
         :param coord: A 2-tuple representing the (row, col) coordinate on the board
         :return: The removed piece
         """
+        assert 0 <= coord[0] <= 7 and 0 <= coord[1] <= 7
+        
         piece = self.board[coord[0]][coord[1]]
         self.board[coord[0]][coord[1]] = None
         return piece
@@ -127,6 +129,8 @@ class Board:
         :param piece: The piece to add
         :return: None
         """
+        assert 0 <= coord[0] <= 7 and 0 <= coord[1] <= 7
+
         if self.board[coord[0]][coord[1]] is not None:
             raise Exception("Attempted to set piece on coordinate %s, there already exists a piece" % coord)
 
@@ -138,6 +142,8 @@ class Board:
         :param coord: A 2-tuple representing the (row, col) coordinate on the board
         :return: The piece at the given coordinate if it exists, otherwise None
         """
+        assert 0 <= coord[0] <= 7 and 0 <= coord[1] <= 7
+
         return self.board[coord[0]][coord[1]]
 
     def __setitem__(self, coord, piece):
@@ -148,6 +154,8 @@ class Board:
         :param piece: The piece to add
         :return: None
         """
+        assert 0 <= coord[0] <= 7 and 0 <= coord[1] <= 7
+
         self.set_piece(coord, piece)
 
     def __str__(self):
