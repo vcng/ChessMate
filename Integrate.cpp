@@ -16,11 +16,11 @@ Integrate::Integrate() {
 
 //readRows definition 
 String Integrate::readRows() {
-	String result = "";					//used for storing result of XOR
+	String result = "";			//used for storing result of XOR
 	
 	for (int i = 0; i < 8; i++) {		//for each row in rows, XOR with sensor readings
-		result = XOR(i);				//result = XOR(index of current row)
-		return result;					//return result
+		result = XOR(i);		//result = XOR(index of current row)
+		return result;			//return result
 	}
 }
 
@@ -32,27 +32,27 @@ String Integrate::XOR(int index) {
 	String coordinate = "";
 	
 	digitalWrite(this->latchPin,1);		//shiftIn,Maw tells the shift registers to save current states
-	delay(20);							//shiftIn,Maw delay for the registers to save
+	delay(20);				//shiftIn,Maw delay for the registers to save
 	digitalWrite(this->latchPin,0);	  	//shiftIn,Maw tells the shift registers to hold data for reading
 
 	temp = shiftIn(this->dataPin, this->clockPin);	//make temp hold current state on the row
 	result = temp ^ rows[index];		//XOR current(temp) and the previous (rows[index])
 	
-	if (result == 0) {					//if the result is 0 then no change has been detected
-		return "";						//return empty String
-	} else {							//a change has been found
-		rows[index] = temp;				//stores current(temp) in previously saved state (rows[index]) 
+	if (result == 0) {			//if the result is 0 then no change has been detected
+		return "";			//return empty String
+	} else {				//a change has been found
+		rows[index] = temp;		//stores current(temp) in previously saved state (rows[index]) 
 
-		int col = 7;					//start reading col at 7, because bytes are stored in reverse index vs an array
+		int col = 7;			//start reading col at 7, because bytes are stored in reverse index vs an array
 
-    	//for loop to find first (and only as of now) bit high and return the cord 
+    		//for loop to find first (and only as of now) bit high and return the cord 
 		for (int bit = 0; bit <= 7; bit++, col--) {	
       
-      		//if the current bit is 1
+      			//if the current bit is 1
 			if (bitRead(result, bit) == 1) {			
 				coordinate += index;	//append the index, row, to the coordinate String
-				coordinate += " ";		//append a space
-				coordinate += col;		//append col, or column, to the coordinate String
+				coordinate += " ";	//append a space
+				coordinate += col;	//append col, or column, to the coordinate String
 				
         		return coordinate;		//return coordinate
 			}
