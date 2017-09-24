@@ -8,16 +8,16 @@
 class Protocol {
 public:
     //Constructor, recieves a Stream reference s, mapping it to serial
-    Protocol(Stream& s):serial(s) {}
+    Protocol (Stream& s) : serial(s) {}
 
     //Start is called inside the setup loop. It loops until the start command is recieved
     //from the Pi indicating it has booted and is ready for input.
     void start() {                 
       String input = "";              //String input empty
-      while(true) {                   //Loop until vaild input is received
+      while (true) {                   //Loop until vaild input is received
         input = serial.readString();  //Read in string
         input.trim();                 //Trim '\n' or whitespace
-        if(input == "start") {         //If input == "start", valid command
+        if (input == "start") {         //If input == "start", valid command
           go();                       //Send received command to Pi
           return;                     //Break loop and return
         }
@@ -35,7 +35,7 @@ public:
     }
      //toggle takes a toggle string, in the form: "t r c", where r = row and c = col.
      //This is then sent to the Pi for processing.    
-     void toggle(String input) {
+    void toggle(String input) {
       serial.println(input);
     }
 private:
@@ -65,29 +65,29 @@ void loop() {
   String out = "t ";
 
   //Loop counts 10 times
-  if(count < 10) {
+  if (count < 10) {
     count++;                    //Increment count
     out += count;               //Create output String
     out += " ";
     out += count+1;
     in = p.listener();          //Read from Pi
-    if(in != "") {              //If in is not empty, i.e something was sent from Pi
-      if(in[0] == 'l') {        //If in == l, which is an led command
+    if (in != "") {              //If in is not empty, i.e something was sent from Pi
+      if (in[0] == 'l') {        //If in == l, which is an led command
         p.go();                 //Call protocol go, which tells Pi we recieved vaild input
         //led calls
         delay(500);             //Delay .5 seconds
-      }else if(in[0] == 'r') {  //If in == r, then reset arduino
+      } else if (in[0] == 'r') {  //If in == r, then reset arduino
         p.go();                 
         //reset hardware call
         delay(500);
-      }else if(in[0] == 'i') {  //If in == i, then initialize the board
+      } else if (in[0] == 'i') {  //If in == i, then initialize the board
         p.go();
         delay(5000);
       }
-    }else {
+    } else {
       p.toggle(out);            //Else send the toggle out
     }
-  }else {
+  } else {
     count = 0;                  //Reset count after 10 iterations
   }
 }                               //End of main loop
