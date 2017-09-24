@@ -5,7 +5,6 @@
 #ifndef INTEGRATE_H
 #define INTEGRATE_H
 
-
 #include "Arduino.h"
 
 class Integrate {
