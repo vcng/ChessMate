@@ -30,6 +30,7 @@ class Integrate {
 		we determine which column changed and return the row, col as a string in the form "r c" for output to the pi.
 		*/
 		String XOR(int index);
+
 		/*
 		readRows iterates over the rows of the board, currently stops when a change is found.
 		*/
