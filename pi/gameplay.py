@@ -10,11 +10,88 @@ class State:
     SHOWING_MOVES = 2
 
 
+class Event:
+    """
+    The transition event
+    """
+    START = 0
+    PICK_UP = 1
+    SET_DOWN = 2
+
+
 # Game data
 chess_board = Board()
 active_piece = None
 active_location = None
 state = State.GAME_STARTING
+
+
+class StateMachine:
+    """
+    Game state machine logic
+    """
+
+    @staticmethod
+    def start_game(_coord):
+        """
+        Start a new game
+        :param _coord: Unused
+        :return: New state, response
+        """
+        global chess_board
+
+        chess_board.reset()
+        return State.WAITING_FOR_INPUT, ['ok']
+
+    @staticmethod
+    def piece_picked_up(coord):
+        """
+        Handle a piece being picked up
+        :param coord: A 2-tuple representing the (row, col) coordinate on the board
+        :return: New state, response
+        """
+        global active_piece
+        global active_location
+
+        active_piece = chess_board.remove_piece(coord)
+        active_location = coord
+
+        return State.SHOWING_MOVES, ['on', active_piece.get_moves(active_location, chess_board)]
+
+    @staticmethod
+    def piece_set_down(coord):
+        """
+        Handle a piece being set down
+        :param coord: A 2-tuple representing the (row, col) coordinate on the board
+        :return: New state, response
+        """
+        global active_piece
+        global active_location
+
+        chess_board.set_piece(coord, active_piece)
+        positions = active_piece.get_moves(active_location, chess_board)
+
+        active_piece = None
+        active_location = None
+
+        return State.WAITING_FOR_INPUT, ['off', positions]
+
+
+# Transitions
+# (CurrentState, Event) -> NewState, Output
+state_machine_mappings = {
+    (State.GAME_STARTING, Event.START): StateMachine.start_game,
+    (State.GAME_STARTING, Event.PICK_UP): None,
+    (State.GAME_STARTING, Event.SET_DOWN): None,
+
+    (State.WAITING_FOR_INPUT, Event.START): None,
+    (State.WAITING_FOR_INPUT, Event.PICK_UP): StateMachine.piece_picked_up,
+    (State.WAITING_FOR_INPUT, Event.SET_DOWN): StateMachine.piece_set_down,
+
+    (State.SHOWING_MOVES, Event.START): None,
+    (State.SHOWING_MOVES, Event.PICK_UP): StateMachine.piece_picked_up,
+    (State.SHOWING_MOVES, Event.SET_DOWN): StateMachine.piece_set_down
+}
 
 
 def toggle_piece(coord):
@@ -31,33 +108,13 @@ def toggle_piece(coord):
     row, col = coord[0], coord[1]
     assert 0 <= row <= 7 and 0 <= col <= 7
 
-    # If there was already a piece here, this must be a lift event
+    # Determine the event type
     if chess_board[coord] is not None:
-        state = State.SHOWING_MOVES
-
-        if active_piece is None:
-            active_piece = chess_board.remove_piece(coord)
-            active_location = coord
-            return ['on', active_piece.get_moves(active_location, chess_board)]
-        else:
-            raise Exception("Second piece picked up")
+        state, response = state_machine_mappings[(state, Event.PICK_UP)](coord)
     else:
-        # Otherwise, this must be a set down event
-        # Ensure that there is an active piece
-        state = State.WAITING_FOR_INPUT
+        state, response = state_machine_mappings[(state, Event.SET_DOWN)](coord)
 
-        if active_piece is not None:
-            # Set down the active piece at the given location
-            chess_board.set_piece(coord, active_piece)
-
-            positions = active_piece.get_moves(active_location, chess_board)
-
-            active_piece = None
-            active_location = None
-
-            return ['off', positions]
-        else:
-            raise Exception("Attempted to set down a piece before piece was selected")
+    return response
 
 
 def start():
@@ -65,8 +122,7 @@ def start():
     Initialize a new game
     :return: None
     """
-    global chess_board
     global state
 
-    chess_board.reset()
-    state = State.WAITING_FOR_INPUT
+    state = state_machine_mappings[(state, Event.START)](None)
+
