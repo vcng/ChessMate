@@ -33,13 +33,23 @@ class StateMachine:
 
     @staticmethod
     def start_game(_coord):
+        """
+        Start a new game
+        :param _coord: Unused
+        :return: New state, response
+        """
         global chess_board
 
         chess_board.reset()
-        return State.WAITING_FOR_INPUT
+        return State.WAITING_FOR_INPUT, ['ok']
 
     @staticmethod
     def piece_picked_up(coord):
+        """
+        Handle a piece being picked up
+        :param coord: A 2-tuple representing the (row, col) coordinate on the board
+        :return: New state, response
+        """
         global active_piece
         global active_location
 
@@ -50,6 +60,11 @@ class StateMachine:
 
     @staticmethod
     def piece_set_down(coord):
+        """
+        Handle a piece being set down
+        :param coord: A 2-tuple representing the (row, col) coordinate on the board
+        :return: New state, response
+        """
         global active_piece
         global active_location
 
@@ -93,6 +108,7 @@ def toggle_piece(coord):
     row, col = coord[0], coord[1]
     assert 0 <= row <= 7 and 0 <= col <= 7
 
+    # Determine the event type
     if chess_board[coord] is not None:
         state, response = state_machine_mappings[(state, Event.PICK_UP)](coord)
     else:
