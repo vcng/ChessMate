@@ -7,7 +7,7 @@ from pieces.pawn import Pawn
 from pieces.bishop import Bishop
 
 chessB = Board()
-# chessB.reset()    # places pieces on board
+chessB.reset()    # places pieces on board
 
 K = King()
 Kn = Knight()
@@ -23,11 +23,13 @@ P2.moved = True                     # cant move twice
 
 locations = []
 
-# chessB.set_piece((4, 4), Piece(PieceType.QUEEN, False))
-# print(Bishop.get_moves((4, 4), None, chessB))
-# print(Bishop.get_moves((0, 0), None, chessB))
-# print(Bishop.get_moves((7, 7), None, chessB))
-# print(Bishop.get_moves((3, 5), None, chessB))
+print(Knight.get_moves((0, 1), Kn, chessB))
+
+ chessB.set_piece((4, 4), Piece(PieceType.QUEEN, False))
+ print(Bishop.get_moves((4, 4), None, chessB))
+ print(Bishop.get_moves((0, 0), None, chessB))
+ print(Bishop.get_moves((7, 7), None, chessB))
+ print(Bishop.get_moves((3, 5), None, chessB))
 
 print(King.get_moves((4, 6), K, chessB))
 print(King.get_moves((5, 5), K, chessB))

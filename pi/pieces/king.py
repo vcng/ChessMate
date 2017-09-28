@@ -13,21 +13,21 @@ class King:
         valid_locs = []
         r, c = cord[0], cord[1]
 
-        if Board.is_valid_location((r + 1, c)):
+        if Board.is_valid_location((r + 1, c)) and chess_board[(r + 1, c)] is None:
             valid_locs.append((r + 1, c))
-        if Board.is_valid_location((r + 1, c + 1)):
+        if Board.is_valid_location((r + 1, c + 1)) and chess_board[(r + 1, c + 1)] is None:
             valid_locs.append((r + 1, c + 1))
-        if Board.is_valid_location((r, c + 1)):
+        if Board.is_valid_location((r, c + 1)) and chess_board[(r, c + 1)] is None:
             valid_locs.append((r, c + 1))
-        if Board.is_valid_location((r - 1, c + 1)):
+        if Board.is_valid_location((r - 1, c + 1)) and chess_board[(r - 1, c + 1)] is None:
             valid_locs.append((r - 1, c + 1))
-        if Board.is_valid_location((r - 1, c)):
+        if Board.is_valid_location((r - 1, c)) and chess_board[(r - 1, c)] is None:
             valid_locs.append((r - 1, c))
-        if Board.is_valid_location((r - 1, c - 1)):
+        if Board.is_valid_location((r - 1, c - 1)) and chess_board[(r - 1, c - 1)] is None:
             valid_locs.append((r - 1, c - 1))
-        if Board.is_valid_location((r, c - 1)):
+        if Board.is_valid_location((r, c - 1)) and chess_board[(r, c - 1)] is None:
             valid_locs.append((r, c - 1))
-        if Board.is_valid_location((r + 1, c - 1)):
+        if Board.is_valid_location((r + 1, c - 1)) and chess_board[(r + 1, c - 1)] is None:
             valid_locs.append((r + 1, c - 1))
 
         return valid_locs
