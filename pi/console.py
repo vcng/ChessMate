@@ -27,8 +27,8 @@ while True:
     col = 0
 
     # Print the initial board
-    print()
-    print(gameplay.chess_board)
+    print
+    print gameplay.chess_board
 
     # Keep trying to pick up a piece until a valid instruction is given
     while True:
@@ -37,7 +37,7 @@ while True:
         try:
             row = int(input('Enter the row (-1 to exit): '))
         except Exception:
-            print('Invalid value, try again')
+            print 'Invalid value, try again'
             continue
 
         if row == -1:
@@ -47,7 +47,7 @@ while True:
         try:
             col = int(input('Enter the column (-1 to exit): '))
         except Exception:
-            print('Invalid value, try again')
+            print 'Invalid value, try again'
             continue
 
         if col == -1:
@@ -55,21 +55,21 @@ while True:
 
         # Ensure valid location
         if not util.is_valid_location((row, col)) or gameplay.chess_board[(row, col)] is None:
-            print('There is no piece at this location. Please try again.\n')
+            print 'There is no piece at this location. Please try again.\n'
             continue
 
         # Let gameplay know the piece was picked up
         # It returns the highlighted tiles
         moves = gameplay.toggle_piece((row, col))[1]
 
-        print('Possible legal moves:', moves)
+        print 'Possible legal moves:', moves
 
         break
 
     # Print out the board with the highlighted pieces
-    print()
-    print(gameplay.chess_board.get_string_representation(moves))
-    print('You are holding:', gameplay.active_piece)
+    print
+    print gameplay.chess_board.get_string_representation(moves)
+    print 'You are holding:', gameplay.active_piece
 
     # Keep trying to put down a piece until a valid instruction is given
     while True:
@@ -78,7 +78,7 @@ while True:
         try:
             row = int(input('Enter the row (-1 to exit): '))
         except Exception:
-            print('Invalid value, try again')
+            print 'Invalid value, try again'
             continue
 
         if row == -1:
@@ -88,7 +88,7 @@ while True:
         try:
             col = int(input('Enter the column (-1 to exit): '))
         except Exception:
-            print('Invalid value, try again')
+            print 'Invalid value, try again'
             continue
 
         if col == -1:
@@ -96,7 +96,7 @@ while True:
 
         # Ensure valid location
         if not util.is_valid_location((row, col)) or gameplay.chess_board[(row, col)] is not None:
-            print('There is a piece at this location, or the coordinate is out of bounds. Please try again.\n')
+            print 'There is a piece at this location, or the coordinate is out of bounds. Please try again.\n'
             continue
 
         # Let gameplay know the piece is being set down
