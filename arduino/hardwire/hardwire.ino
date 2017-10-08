@@ -8,10 +8,10 @@
 static const byte BOARD_PINS[] = {
   43, 43, 43, 43, 43, 43, 43, 43,
   43, 43, 43, 43, 43, 43, 43, 43,
-  43, 43, 22, 23, 24, 25, 43, 43,
-  43, 43, 26, 27, 28, 29, 43, 43,
-  43, 43, 30, 31, 32, 33, 43, 43,
-  43, 43, 34, 35, 36, 37, 43, 43,
+  43, 43, 25, 43, 43, 43, 43, 43,
+  43, 43, 24, 43, 43, 43, 43, 43,
+  43, 43, 23, 43, 43, 43, 43, 43,
+  43, 43, 22, 43, 43, 43, 43, 43,
   43, 43, 43, 43, 43, 43, 43, 43,
   43, 43, 43, 43, 43, 43, 43, 43
 };
@@ -19,7 +19,7 @@ static const byte BOARD_PINS[] = {
 byte board[SIZE];
 byte backup[SIZE];
 
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, NEO_RGBW + NEO_KHZ800);
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, NEO_GRBW + NEO_KHZ800);
 
 void setup() {
   // Begin serial communication
@@ -36,6 +36,10 @@ void setup() {
     backup[i] = 0;
   }
 
+  board[18] = 1;
+  backup[18] = 1;
+  
+
   // Initialize LED strip
   strip.begin();
   strip.show();
@@ -50,13 +54,13 @@ int coordToIndex(int row, int col) {
   if (row % 2 == 0) {
     return row * 8 + col;
   } else {
-    return (row * 8) - col - 1;
+    return (row + 1) * 8 - col - 1;
   }
 }
 
 void loop() {
-  strip.setPixelColor(0, strip.Color(255, 0, 0));
-
+  //strip.setPixelColor(14, strip.Color(255, 0, 0, 0));
+  //strip.show();
   pollHardware();
   pollController();
   
@@ -86,7 +90,7 @@ void pollHardware() {
 
 void pollController() {
   // If there is any serial communication available
-  if (Serial.available() > 0) {
+  while (Serial.available() > 0) {
     // Read the command string
     String cmd = Serial.readStringUntil(':');
 
@@ -112,14 +116,16 @@ void pollController() {
 
         // Execute the command on the LED strip
         if (cmd == "on") {
-          strip.setPixelColor(coordToIndex(row, col), strip.Color(255, 0, 0));
+          strip.setPixelColor(coordToIndex(row, col), strip.Color(255, 0, 0, 0));
         } else if (cmd == "off") {
-          strip.setPixelColor(coordToIndex(row, col), strip.Color(0, 0, 0));
+          strip.setPixelColor(coordToIndex(row, col), strip.Color(0, 0, 0, 0));
         }
 
-        // Show the update
-        strip.show();
+        
       }
+
+      // Show the update
+      strip.show();
     }
   }
 }

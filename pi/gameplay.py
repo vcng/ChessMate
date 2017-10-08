@@ -68,6 +68,9 @@ class StateMachine:
         global active_piece
         global active_location
 
+        if active_piece is None:
+            return State.WAITING_FOR_INPUT, None
+
         chess_board.set_piece(coord, active_piece)
         positions = active_piece.get_moves(active_location, chess_board)
 
