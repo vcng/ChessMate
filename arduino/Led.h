@@ -8,11 +8,11 @@
 #include "Arduino.h"
 #include "Adafruit_NeoPixel.h"
 
-#define PIN 6
+#define PIN 52
 
-#define NUM_LEDS 8
+#define NUM_LEDS 64
 
-#define BRIGHTNESS 5
+#define BRIGHTNESS 255
 
 class Led {
     private:
