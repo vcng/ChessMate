@@ -124,5 +124,6 @@ def start():
     """
     global state
 
-    state = state_machine_mappings[(state, Event.START)](None)
+    state, _ = state_machine_mappings[(state, Event.START)](None)
+    chess_board.reset()
 
