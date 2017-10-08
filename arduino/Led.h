@@ -12,7 +12,7 @@
 
 #define NUM_LEDS 8
 
-#define BRIGHTNESS 50
+#define BRIGHTNESS 5
 
 class Led {
     private:
@@ -28,19 +28,11 @@ class Led {
             {63,62,61,60,59,58,57,56}
         };
 
-        int length = 0; // this will represent the length input fo the LED strip
-
-        int next_row = 8; //since each row is seperated by 8, we will use this as a counter between rows
-
-        Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, PIN, NEO_GRBW + NEO_KHZ800);
+        Adafruit_NeoPixel strip;
     
     public:
-        /*
-		Default constructor for Led
-        Initializes the LED strip before using other
-        function calls on it.
-		*/
-        Led();
+
+        void startStrip();
         
         /*
         This function is going to be used to show the possible movements
@@ -50,11 +42,19 @@ class Led {
         */
         void showMove(char x, char y);
 
+
+
+        void hideMove(char x, char y);
+
         /*
         This function just pushes all the updated coordinates
         to the bard to light up the LED's.
         */
         void update();
+
+
+
+
     };
 
 #endif
