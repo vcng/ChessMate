@@ -1,18 +1,26 @@
 # ChessMate
 ChessMate is here to provide new chess players a more interactive learning experience.
 
-## Setting up and using the Prototype
+## Setting up and using the MVP
 
-After grabbing the release, you can try out the prototype with the following steps:
+After grabbing the release, you can try out the MVP with the following steps:
 
-### 1. Install Python 3.6 or higher
+> Note: You need our custom-made **ChessMate Board** to use this software.
 
-If **Python 3** is not already installed, you can install it from the [python website](https://www.python.org/downloads/).
+### 1. Install Python 2.7 on the controller
 
-### 2. Run the program
+The controller is typically a `Raspberry Pi`. Raspbian Linux comes with this installed.
+If **Python 2.7** is not already installed, you can install it from the [python website](https://www.python.org/downloads/).
 
-The game logic can be tested out by using the provided sample program to move pieces around. This application allows you to view the state of the board and pick up pieces. When a piece is picked up, you can see what the valid moves for that piece are. Afterwards, you can set that piece back down.
+### 2. Flash the arduino firmware
 
-To use the prototype, navigate to the `pi` directory and run the following command:
+Using `Arduino Studio`, ensure the following libraries are loaded:
+- Adafruit NeoPixel. More info on installing libraries: [Arduino Libraries](https://www.arduino.cc/en/Guide/Libraries)
 
-> `python console.py`
+Flash the device with the `.ino` file by opening the `.ino` file in `Arduino Studio`. Select the port that the `Arduino` is on and select the `Arduino Mega` for a device.
+
+### 3. Plug in the power to the board and arduino
+
+### 4. Plug in the power to the controller (Most likely the pi)
+
+### 5. Begin playing
