@@ -68,8 +68,14 @@ class StateMachine:
         global active_piece
         global active_location
 
-        chess_board.set_piece(coord, active_piece)
+        if active_piece is None:
+            return State.WAITING_FOR_INPUT, None
+
         positions = active_piece.get_moves(active_location, chess_board)
+        chess_board.set_piece(coord, active_piece)
+
+        # TODO Only do this if the piece actually moved
+        active_piece.moved = True
 
         active_piece = None
         active_location = None
@@ -124,5 +130,6 @@ def start():
     """
     global state
 
-    state = state_machine_mappings[(state, Event.START)](None)
+    state, _ = state_machine_mappings[(state, Event.START)](None)
+    chess_board.reset()
 
