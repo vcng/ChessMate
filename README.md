@@ -5,14 +5,20 @@ ChessMate is here to provide new chess players a more interactive learning exper
 
 After grabbing the release, you can try out the prototype with the following steps:
 
-### 1. Install Python 3.6 or higher
+### 1. Install Python 2.7 on the controller
 
-If **Python 3** is not already installed, you can install it from the [python website](https://www.python.org/downloads/).
+The controller is typically a `Raspberry Pi`. Raspbian Linux comes with this installed.
+If **Python 2.7** is not already installed, you can install it from the [python website](https://www.python.org/downloads/).
 
-### 2. Run the program
+### 2. Flash the arduino firmware
 
-The game logic can be tested out by using the provided sample program to move pieces around. This application allows you to view the state of the board and pick up pieces. When a piece is picked up, you can see what the valid moves for that piece are. Afterwards, you can set that piece back down.
+Using `Arduino Studio`, ensure the following libraries are loaded:
+- Adafruit NeoPixel
 
-To use the prototype, navigate to the `pi` directory and run the following command:
+Flash the device with the `.ino` file.
 
-> `python console.py`
+### 3. Plug in the power to the board
+
+### 4. Plug in the power to the controller (Most likely the pi)
+
+### 5. Begin playing
