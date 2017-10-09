@@ -71,8 +71,11 @@ class StateMachine:
         if active_piece is None:
             return State.WAITING_FOR_INPUT, None
 
-        chess_board.set_piece(coord, active_piece)
         positions = active_piece.get_moves(active_location, chess_board)
+        chess_board.set_piece(coord, active_piece)
+
+        # TODO Only do this if the piece actually moved
+        active_piece.moved = True
 
         active_piece = None
         active_location = None

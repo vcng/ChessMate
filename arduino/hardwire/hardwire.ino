@@ -1,8 +1,11 @@
+
+
 #define SIZE 64
 #define LED_COUNT 64
 #define LED_PIN 52
 
 #include <Adafruit_NeoPixel.h>
+
 
 // Board pin mapping
 static const byte BOARD_PINS[] = {
@@ -21,9 +24,11 @@ byte backup[SIZE];
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, NEO_GRBW + NEO_KHZ800);
 
+//Led L;
+
 void setup() {
   // Begin serial communication
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   // Set all pins to input
   for (int pin = 0; pin < SIZE; pin++) {
@@ -36,13 +41,18 @@ void setup() {
     backup[i] = 0;
   }
 
-  board[18] = 1;
-  backup[18] = 1;
+  board[5] = 1;
+  backup[5] = 1;
+  board[42] = 1;
+  backup[42] = 1;
   
-
+  //L.startStrip();
+  
   // Initialize LED strip
   strip.begin();
   strip.show();
+
+  delay(1000);
 }
 
 // Convert a row, col to an LED strip index
@@ -63,8 +73,6 @@ void loop() {
   //strip.show();
   pollHardware();
   pollController();
-  
-  delay(100);
 }
 
 void pollHardware() {
@@ -116,16 +124,14 @@ void pollController() {
 
         // Execute the command on the LED strip
         if (cmd == "on") {
-          strip.setPixelColor(coordToIndex(row, col), strip.Color(255, 0, 0, 0));
+          strip.setPixelColor(coordToIndex(row, col), strip.Color(255, 255, 255, 0));
         } else if (cmd == "off") {
           strip.setPixelColor(coordToIndex(row, col), strip.Color(0, 0, 0, 0));
         }
-
-        
       }
-
       // Show the update
       strip.show();
+      //L.update();
     }
   }
 }
