@@ -123,3 +123,7 @@ class TestPieces(unittest.TestCase):
             (0, 2),
             (2, 0)
         ], Queen.get_moves((1, 1), b[(1, 1)], b))
+
+
+if __name__ == "__main__":
+    unittest.main()
