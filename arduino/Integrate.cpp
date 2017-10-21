@@ -42,8 +42,8 @@ void integrate_init()
 
 	pinMode(newClockPin, OUTPUT);
 
-	backup[0] = 1;
-	newBoard[0] = 1;
+	backup[8] = 1;
+	newBoard[8] = 1;
 
 	/*
 	//variable definitions
