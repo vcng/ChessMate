@@ -28,14 +28,13 @@ byte newBoard [64];
 // used to compare to the state of newBoard
 byte backup [64];
 
-
-
-
-
-
+//////////////////////////////////////////
+//////////////////////////////////////////
+//////////////////////////////////////////
 
 //initialize definition
-bool initialize() {
+bool initializeHardware() 
+{
 	//variable definitions
 	int check_array[64] = {1,1,1,1,1,1,1,1,
 						   1,1,1,1,1,1,1,1,
@@ -78,36 +77,37 @@ bool initialize() {
 		}
 
 		for (int check = 0; check <= 8; check++) // check to make sure all the piece are set up on the board, for each row
-		{
+			{
 			if (check == 8) // if loop ends that means the setup for the pieces on the board are all correct
 				return true;
 
 			if(int(rows[check]) != check_array[check]) // check if each of the rows are set up so to how the game should be started
 				break;
+			}
 		}
 	}
-	// end function 
-}
+} // end function
 
-
-
-
-
+//////////////////////////////////////////
+//////////////////////////////////////////
+//////////////////////////////////////////
 
 // pollHardware function definition
-void Integrate::pollHardware() {
-	for (int pin = 0; pin < 8; pin++) {
+void pollHardware() 
+{
+	for (int pin = 0; pin < 8; pin++) 
+	{
 	  shiftRegisterIn(newLatchPin[pin], pin);
 	}
-  }
+} // end function
+
+//////////////////////////////////////////
+//////////////////////////////////////////
+//////////////////////////////////////////
   
-
-
-
-
-
 // shiftRegisterIn function definition
-void shiftRegisterIn(int oe, int row) { //int oe, refers to the latch pin.
+void shiftRegisterIn(int oe, int row) //int oe, refers to the latch pin.
+{ 
 	digitalWrite(oe, 1);
 	delayMicroseconds(20);
 	digitalWrite(oe, 0);
@@ -125,15 +125,20 @@ void shiftRegisterIn(int oe, int row) { //int oe, refers to the latch pin.
 	Serial.print(digitalRead(dataPin8));*/
 	
 	// Read all 64 pins to see if they are true (1) or false (0), then set them
-	for (int pin = 0; pin < 8; pin++) {
-	  if (digitalRead(newDataPin[pin])) {
+	for (int pin = 0; pin < 8; pin++) 
+	{
+	  if (digitalRead(newDataPin[pin])) 
+	  {
 		newBoard[row * 8 + pin] = 1;
-	  } else {
+	  } 
+	  else 
+	  {
 		newBoard[row * 8 + pin] = 0;
 	  }
 
 	  // Check for change
-	  if (newBoard[row * 8 + pin] != backup[row * 8 + pin]) {
+	  if (newBoard[row * 8 + pin] != backup[row * 8 + pin]) 
+	  {
 		  toggle(pin / 8, pin % 8);
 	  }
   
@@ -146,4 +151,4 @@ void shiftRegisterIn(int oe, int row) { //int oe, refers to the latch pin.
 	
 	// Write the latch (oe pin)
 	digitalWrite(oe, 1);
-}
+} // end function
