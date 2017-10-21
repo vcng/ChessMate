@@ -3,9 +3,10 @@
 #include "protocol.h"
 
 void setup() {
-  integrate_init();
   led_init();
+  integrate_init();
   protocol_init();
+  led_clear();
 }
 
 void loop() {
