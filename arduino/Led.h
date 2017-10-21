@@ -36,5 +36,8 @@ void led_hide_move(char x, char y);
 to the bard to light up the LED's.  */
 void led_update();
 
+// Clear the board
+void led_clear();
+
 
 #endif

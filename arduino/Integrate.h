@@ -17,6 +17,9 @@ this functon will return back to the protocol to allow the start of the game.
 */
 void integrate_init();
 
+// Wait for a valid board start state
+void integrate_wait_for_valid_start();
+
 // This is function keeps signaling the hardware to see if the there are any updates coming from the board,
 // if so we can determine the changed bits form the 64 (8 * 8bytes) possible.
 void integrate_poll_hardware();

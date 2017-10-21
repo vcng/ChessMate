@@ -46,6 +46,15 @@ void led_show_move(char color, char x, char y) {
         case 'w': 
             strip.setPixelColor(led_array[r][c], strip.Color(255, 255, 255, 0));
             break;
+        case 'g':
+            strip.setPixelColor(led_array[r][c], strip.Color(0, 255, 0, 0));
+            break;
+        case 'r':
+            strip.setPixelColor(led_array[r][c], strip.Color(255, 0, 0, 0));
+            break;
+        case 'b':
+            strip.setPixelColor(led_array[r][c], strip.Color(0, 0, 255, 0));
+            break;
     }
 }
 
@@ -60,4 +69,12 @@ void led_hide_move(char x, char y) {
 // update definition
 void led_update() {
     strip.show(); // show strip
+}
+
+void led_clear() {
+    for (int i = 0; i < 64; i++) {
+		led_hide_move((i / 8) + '0', (i % 8) + '0');
+	}
+
+	led_update();
 }
