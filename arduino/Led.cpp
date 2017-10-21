@@ -4,7 +4,7 @@
 // Source File
 
 #include "Arduino.h"
-#include "Led.h"
+#include "led.h"
 #include "protocol.h"
 
 //////////////////////////////////////////
@@ -29,14 +29,14 @@ Adafruit_NeoPixel strip;
 //////////////////////////////////////////
 
 // startStrip defintion
-void startStrip() {
+void led_init() {
     strip = Adafruit_NeoPixel(NUM_LEDS, PIN, NEO_GRBW + NEO_KHZ800);
     strip.begin();
     strip.show();
 }
 
 // showMove definition
-void showMove(char color, char x, char y) {
+void led_show_move(char color, char x, char y) {
     int r = x - '0'; // convert ASCII
     int c = y - '0'; // convert ASCII
 
@@ -48,13 +48,13 @@ void showMove(char color, char x, char y) {
 }
 
 //hideMove defintion
-void hideMove(char x, char y) {
+void led_hide_move(char x, char y) {
     int r = x - '0'; // convert ASCII
     int c = y - '0'; // convert ASCII
     strip.setPixelColor(led_array[r][c], 0, 0, 0, 0); // no color
 } 
 
 // update definition
-void update() {
+void led_update() {
     strip.show(); // show strip
 }

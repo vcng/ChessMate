@@ -4,7 +4,7 @@
 // Source File
 
 #include "Arduino.h"
-#include "Integrate.h"
+#include "integrate.h"
 #include "protocol.h"
 
 
@@ -12,29 +12,40 @@
 //		  PRE-DEFINED VARIABLES			//
 //////////////////////////////////////////
 // Tells the D-flip flops chips to save state for reading
-int newLatchPin[8] = {22, 23, 24, 25, 26, 27, 28, 29}
+int newLatchPin[8] = {22, 23, 24, 25, 26, 27, 28, 29};
 
 // These are the pins data is read from
-int newDataPin[8] = {46, 47, 48, 49, 50, 51, 52, 53}
+int newDataPin[8] = {46, 47, 48, 49, 50, 51, 52, 53};
 
 // This pin is used for iterating over data
 int newClockPin = 32;			
 
 // Holds the state of the board as bytes, 
 // each bit is a col in a row
-byte newBoard [64];
+byte newBoard[64];
 
 // Backup is same as newBoard, 
 // used to compare to the state of newBoard
-byte backup [64];
+byte backup[64];
 
 //////////////////////////////////////////
 //////////////////////////////////////////
 //////////////////////////////////////////
 
 //initialize definition
-bool initializeHardware() 
+void integrate_init() 
 {
+	for (int i = 0; i < 8; i++) {
+		pinMode(newLatchPin[i], OUTPUT);
+		pinMode(newDataPin[i], INPUT);
+	}
+
+	pinMode(newClockPin, OUTPUT);
+
+	backup[0] = 1;
+	newBoard[0] = 1;
+
+	/*
 	//variable definitions
 	int check_array[64] = {1,1,1,1,1,1,1,1,
 						   1,1,1,1,1,1,1,1,
@@ -86,14 +97,14 @@ bool initializeHardware()
 			}
 		}
 	}
-} // end function
+*/} // end function
 
 //////////////////////////////////////////
 //////////////////////////////////////////
 //////////////////////////////////////////
 
 // pollHardware function definition
-void pollHardware() 
+void integrate_poll_hardware() 
 {
 	for (int pin = 0; pin < 8; pin++) 
 	{
@@ -114,15 +125,6 @@ void shiftRegisterIn(int oe, int row) //int oe, refers to the latch pin.
   
 	digitalWrite(newClockPin, 0);
 	delayMicroseconds(20);
-  
-	/*Serial.print(digitalRead(dataPin1));
-	Serial.print(digitalRead(dataPin2));
-	Serial.print(digitalRead(dataPin3));
-	Serial.print(digitalRead(dataPin4));
-	Serial.print(digitalRead(dataPin5));
-	Serial.print(digitalRead(dataPin6));
-	Serial.print(digitalRead(dataPin7));
-	Serial.print(digitalRead(dataPin8));*/
 	
 	// Read all 64 pins to see if they are true (1) or false (0), then set them
 	for (int pin = 0; pin < 8; pin++) 
@@ -139,7 +141,7 @@ void shiftRegisterIn(int oe, int row) //int oe, refers to the latch pin.
 	  // Check for change
 	  if (newBoard[row * 8 + pin] != backup[row * 8 + pin]) 
 	  {
-		  toggle(pin / 8, pin % 8);
+		  protocol_toggle((row * 8 + pin) / 8, (row * 8 + pin) % 8);
 	  }
   
 	  // Update the backup for future comparisons
@@ -147,7 +149,7 @@ void shiftRegisterIn(int oe, int row) //int oe, refers to the latch pin.
 	}
 	
 	//Serial.print("\n");
-	digitalWrite(clockPin, 1);
+	digitalWrite(newClockPin, 1);
 	
 	// Write the latch (oe pin)
 	digitalWrite(oe, 1);

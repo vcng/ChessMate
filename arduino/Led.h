@@ -18,23 +18,23 @@
 
 
 /*     Starts the strip     */
-void startStrip();
+void led_init();
 
 
 /*  This function is going to be used to show the possible movements
 when the piece is lifted up given from the XOR function that is
 defined in the Integrate library. This will show the exact location
 on where to light up that LED based on that coordinate. */
-void showMove(char color, char x, char y);
+void led_show_move(char color, char x, char y);
 
 
 /*   This function will just hide a move at the coordinates given    */
-void hideMove(char x, char y);
+void led_hide_move(char x, char y);
 
 
 /*  This function just pushes all the updated coordinates
 to the bard to light up the LED's.  */
-void update();
+void led_update();
 
 
 #endif
