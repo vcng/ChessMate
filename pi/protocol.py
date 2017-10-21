@@ -7,7 +7,7 @@ import time
 
 class Protocol:
 
-    def __init__(self, s, debug=None):
+    def __init__(self, s=None, debug=None):
         """ Constructor for Protocol class, sets up port for USB Serial.
         :param s: Is for starting serial.
         :param debug: If debug is set, prints debug statements.
