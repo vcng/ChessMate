@@ -1,7 +1,7 @@
 # Programmer: Miles Avelli
 # Date: 10/20/2017
 
-from serial import*
+from serial import *
 import time
 
 
@@ -54,16 +54,24 @@ class Protocol:
         else:
             print '== initializing serial port =='
 
-            for port in range(0,10):
-                print '== trying port ' + str(port) + ' ==',
+            if port is None:
+                for port in range(0,10):
+                    print '== trying port ' + str(port) + ' ==',
+                    try:
+                        self.ser = Serial('/dev/ttyACM%s' % port, 115200)
+                        if self.ser:
+                            print'== port found =='
+                            found = True
+                            break
+                    except Exception:
+                        print '$$ error could not find port $$'
+                        pass
+            else:
                 try:
-                    self.ser = Serial('/dev/ttyACM%s' % port, 115200)
+                    self.ser = Serial(port, 115200)
                     if self.ser:
-                        print'== port found =='
                         found = True
-                        break
                 except Exception:
-                    print '$$ error could not find port $$'
                     pass
 
             if found:
@@ -91,8 +99,7 @@ class Protocol:
             cmd = self.__listener()                                 # Call __listener to get the command from Arduino
 
             if cmd[0] == 't':                                       # t = toggle
-                cmd.pop(0)
-                return ( int(cmd[0]), int(cmd[1]) )                                  # Returns the toggled coord
+                return ( int(cmd[1]), int(cmd[2]) )                                  # Returns the toggled coord
             else:
                 return 'error'                                    # Received input not valid, send error code
 
@@ -102,9 +109,8 @@ class Protocol:
             cmd = self.__listener()
 
             if cmd[0] == 't':
-                cmd.pop(0)
                 print '== received command ' + cmd + ' =='
-                return ( int(cmd[0]), int(cmd[1]) )
+                return ( int(cmd[1]), int(cmd[2]) )
             else:
                 print'$$ error command not found $$'
                 return 'error'
@@ -208,34 +214,26 @@ class Protocol:
         # Check if in debug mode
         if debug is None:
             # Send an led command to arduino
-            output = 'l:1:' + l + ':'
+            output = 'l:1:' + str(l) + ':'
+
+            print '>>>>>>>>>>', loc
 
             for ea in loc:
-                if ea[0].isalpha():
-                    output += ea[0]         # color
-                    output += ea[1][0]      # row from tuple
-                    output += ea[1][1]      # col from tuple
-                else:
-                    output += 'w'           # default white
-                    output += ea[0]         # row
-                    output += ea[1]         # col
+                output += 'w'           # default white
+                output += str(ea[0])         # row
+                output += str(ea[1])         # col
 
             self.ser.write(str(output))
 
         # Debug mode
         else:
             print '== led on command =='
-            output = 'l:1:' + l + ':'
+            output = 'l:1:' + str(l) + ':'
 
             for ea in loc:
-                if ea[0].isalpha():
-                    output += ea[0]  # color
-                    output += ea[1][0]  # row from tuple
-                    output += ea[1][1]  # col from tuple
-                else:
-                    output += 'w'  # default white
-                    output += ea[0]  # row
-                    output += ea[1]  # col
+                output += 'w'  # default white
+                output += ea[0]  # row
+                output += ea[1]  # col
 
             print '== sending l:1:'+ l + ':' + output + ' =='
             self.ser.write(str(output))
@@ -254,23 +252,23 @@ class Protocol:
         # Check if in debug mode
         if debug is None:
             # Send an led cmd to arduino
-            output = 'l:0:' + l + ':'
+            output = 'l:0:' + str(l) + ':'
 
             for ea in loc:
-                output += ea[0]  # row
-                output += ea[1]  # col
+                output += str(ea[0])  # row
+                output += str(ea[1])  # col
 
             self.ser.write(str(output))
 
         # Debug mode
         else:
             print '== led off command =='
-            output = 'l:0:' + l + ':'
+            output = 'l:0:' + str(l) + ':'
 
             for ea in loc:
-                output += ea[0]  # row
-                output += ea[1]  # col
-            print '== sending l:0:'+ l +':' + output + ' =='
+                output += str(ea[0])  # row
+                output += str(ea[1])  # col
+            print '== sending l:0:' + str(l) + ':' + output + ' =='
             self.ser.write(str(output))
 
     def show_moves(self, loc, debug=None):
@@ -286,22 +284,22 @@ class Protocol:
             # If on command, use __led_on
             if loc[0] == 'on':
                 loc.pop(0)      # Delete front element, resulting in a list of coordinates only
-                self.__led_on(loc)
+                self.__led_on(loc[0])
             # Else use __led_off
             else:
                 loc.pop(0)
-                self.__led_off(loc)
+                self.__led_off(loc[0])
 
         # Debug mode
         else:
             if loc[0] == 'on':
                 loc.pop(0)
                 print '== show moves command =='
-                self.__led_on(loc)
+                self.__led_on(loc[0])
             else:
                 loc.pop(0)
                 print '== hide moves command =='
-                self.__led_off(loc)
+                self.__led_off(loc[0])
 
     def reset_arduino(self, debug=None):
         """ Sends the reset command to the Arduino.
