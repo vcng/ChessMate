@@ -32,7 +32,7 @@ void protocol_listen() {
         //if led command
         if (cmd == "l") {
             cmd = Serial.readStringUntil(':');
-            if (cmd == "0"){
+            if (cmd == "0") {
                 count = Serial.readStringUntil(':').toInt();
                 cmd = Serial.readString();
                 for (int i = 0; i < count; i++) {

@@ -31,7 +31,6 @@ void led_show_move(char color, char x, char y);
 /*   This function will just hide a move at the coordinates given    */
 void led_hide_move(char x, char y);
 
-
 /*  This function just pushes all the updated coordinates
 to the bard to light up the LED's.  */
 void led_update();

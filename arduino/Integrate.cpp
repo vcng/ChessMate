@@ -95,8 +95,7 @@ void integrate_init()
 // pollHardware function definition
 void integrate_poll_hardware() 
 {
-	for (int pin = 0; pin < 8; pin++) 
-	{
+	for (int pin = 0; pin < 8; pin++) {
 	  shiftRegisterIn(newLatchPin[pin], pin);
 	}
 }
@@ -112,25 +111,21 @@ void shiftRegisterIn(int oe, int row) //int oe, refers to the latch pin.
 	delayMicroseconds(20);
 	
 	// Read all 64 pins to see if they are true (1) or false (0), then set them
-	for (int pin = 0; pin < 8; pin++) 
-	{
-	  if (digitalRead(newDataPin[pin])) 
-	  {
-		newBoard[row * 8 + pin] = 1;
-	  } 
-	  else 
-	  {
-		newBoard[row * 8 + pin] = 0;
-	  }
+	for (int pin = 0; pin < 8; pin++) {
+		if (digitalRead(newDataPin[pin])) {
+			newBoard[row * 8 + pin] = 1;
+		} else {
+			newBoard[row * 8 + pin] = 0;
+		}
 
-	  // Check for change
-	  if (newBoard[row * 8 + pin] != backup[row * 8 + pin]) 
-	  {
-		  protocol_toggle((row * 8 + pin) / 8, (row * 8 + pin) % 8);
-	  }
+		// Check for change
+		if (newBoard[row * 8 + pin] != backup[row * 8 + pin]) 
+		{
+			protocol_toggle((row * 8 + pin) / 8, (row * 8 + pin) % 8);
+		}
   
-	  // Update the backup for future comparisons
-	  backup[row * 8 + pin] = newBoard[row * 8 + pin];
+		// Update the backup for future comparisons
+		backup[row * 8 + pin] = newBoard[row * 8 + pin];
 	}
 	
 	//Serial.print("\n");
