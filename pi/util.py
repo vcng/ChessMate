@@ -6,3 +6,11 @@ def is_valid_location(coord):
     """
     row, col = coord[0], coord[1]
     return 0 <= row <= 7 and 0 <= col <= 7
+
+#def detect_check(piece):
+    """
+    Detects if teams king is in "check" based on the movements on board
+    :param piece: a king object
+    :return: Boolean, True if king passed in is in check else false
+    """
+    

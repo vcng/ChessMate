@@ -5,25 +5,56 @@
 
 #include "Arduino.h"
 #include "Led.h"
+#include "protocol.h"
 
-void Led::startStrip() {
+//////////////////////////////////////////
+//		  PRE-DEFINED VARIABLES			//
+//////////////////////////////////////////
+int led_array[8][8] = 
+{
+    {0 ,1 ,2 ,3 ,4 ,5 ,6 ,7 },
+    {15,14,13,12,11,10,9 ,8 },
+    {16,17,18,19,20,21,22,23},
+    {31,30,29,28,27,26,25,24},
+    {32,33,34,35,36,37,38,39},
+    {47,46,45,44,43,42,41,40},
+    {48,49,50,51,52,53,54,55},
+    {63,62,61,60,59,58,57,56}
+};
+
+Adafruit_NeoPixel strip;
+
+//////////////////////////////////////////
+//////////////////////////////////////////
+//////////////////////////////////////////
+
+// startStrip defintion
+void startStrip() {
     strip = Adafruit_NeoPixel(NUM_LEDS, PIN, NEO_GRBW + NEO_KHZ800);
     strip.begin();
     strip.show();
 }
 
-void Led::showMove(char x, char y) {
-    int r = x - '0';
-    int c = y - '0'; 
-    strip.setPixelColor(led_array[r][c], 0, 0, 0, 50);
+// showMove definition
+void showMove(char color, char x, char y) {
+    int r = x - '0'; // convert ASCII
+    int c = y - '0'; // convert ASCII
+
+    switch(c){
+        case 'w': 
+            strip.setPixelColor(led_array[r][c], 0, 0, 0, 50);
+            break;
+    }     
 }
 
-void Led::hideMove(char x, char y) {
-    int r = x - '0';
-    int c = y - '0'; 
-    strip.setPixelColor(led_array[r][c], 0, 0, 0, 0);
+//hideMove defintion
+void hideMove(char x, char y) {
+    int r = x - '0'; // convert ASCII
+    int c = y - '0'; // convert ASCII
+    strip.setPixelColor(led_array[r][c], 0, 0, 0, 0); // no color
 } 
 
-void Led::update() {
-    strip.show();
+// update definition
+void update() {
+    strip.show(); // show strip
 }
