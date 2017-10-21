@@ -42,7 +42,7 @@ void led_show_move(char color, char x, char y) {
     int r = x - '0'; // convert ASCII
     int c = y - '0'; // convert ASCII
 
-    switch(color){
+    switch (color) {
         case 'w': 
             strip.setPixelColor(led_array[r][c], strip.Color(255, 255, 255, 0));
             break;
@@ -55,6 +55,12 @@ void led_show_move(char color, char x, char y) {
         case 'b':
             strip.setPixelColor(led_array[r][c], strip.Color(0, 0, 255, 0));
             break;
+        case 't':
+            strip.setPixelColor(led_array[r][c], strip.Color(0, 128, 128, 0));
+            break;
+        case 'o':
+            strip.setPixelColor(led_array[r][c], strip.Color(255, 165, 0, 0));
+            break;
     }
 }
 
@@ -63,8 +69,8 @@ void led_hide_move(char x, char y) {
     int r = x - '0'; // convert ASCII
     int c = y - '0'; // convert ASCII
 
-    strip.setPixelColor(led_array[r][c], strip.Color(0, 0, 0, 0)); // no color
-} 
+    strip.setPixelColor(led_array[r][c], strip.Color(0, 128, 128, 0)); // no color
+}
 
 // update definition
 void led_update() {
@@ -73,7 +79,7 @@ void led_update() {
 
 void led_clear() {
     for (int i = 0; i < 64; i++) {
-		led_hide_move((i / 8) + '0', (i % 8) + '0');
+		led_show_move('t', (i / 8) + '0', (i % 8) + '0');
 	}
 
 	led_update();
