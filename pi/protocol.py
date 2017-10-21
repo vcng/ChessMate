@@ -82,9 +82,10 @@ class Protocol:
             cmd = self.__listener()                                 # Call __listener to get the command from Arduino
 
             if cmd[0] == 't':                                       # t = toggle
-                return [list(cmd)]                                  # Returns the toggled coord
+                cmd.pop(0)
+                return (cmd[0], cmd[1])                                  # Returns the toggled coord
             else:
-                return ['error']                                    # Received input not valid, send error code
+                return 'error'                                    # Received input not valid, send error code
 
         # Debug mode
         else:
@@ -92,11 +93,12 @@ class Protocol:
             cmd = self.__listener()
 
             if cmd[0] == 't':
+                cmd.pop(0)
                 print '== received command ' + cmd + ' =='
-                return [list(cmd)]
+                return (cmd[0], cmd[1])
             else:
                 print'$$ error command not found $$'
-                return ['error']
+                return 'error'
 
     def __listener(self, debug=None):
         """ Helper used to retrieve serial input from Arduino, polls the serial buffer until input is detected.
