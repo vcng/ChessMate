@@ -22,7 +22,9 @@ int led_array[8][8] =
     {63,62,61,60,59,58,57,56}
 };
 
-Adafruit_NeoPixel strip;
+// DO NOT MOVE THIS INITIALIZATION
+// IT WILL BREAK EVERYTHING
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, PIN, NEO_GRBW + NEO_KHZ800);
 
 //////////////////////////////////////////
 //////////////////////////////////////////
@@ -30,7 +32,7 @@ Adafruit_NeoPixel strip;
 
 // startStrip defintion
 void led_init() {
-    strip = Adafruit_NeoPixel(NUM_LEDS, PIN, NEO_GRBW + NEO_KHZ800);
+    pinMode(PIN, OUTPUT);
     strip.begin();
     strip.show();
 }
@@ -40,18 +42,19 @@ void led_show_move(char color, char x, char y) {
     int r = x - '0'; // convert ASCII
     int c = y - '0'; // convert ASCII
 
-    switch(c){
+    switch(color){
         case 'w': 
-            strip.setPixelColor(led_array[r][c], 0, 0, 0, 50);
+            strip.setPixelColor(led_array[r][c], strip.Color(255, 255, 255, 0));
             break;
-    }     
+    }
 }
 
 //hideMove defintion
 void led_hide_move(char x, char y) {
     int r = x - '0'; // convert ASCII
     int c = y - '0'; // convert ASCII
-    strip.setPixelColor(led_array[r][c], 0, 0, 0, 0); // no color
+
+    strip.setPixelColor(led_array[r][c], strip.Color(0, 0, 0, 0)); // no color
 } 
 
 // update definition

@@ -3,7 +3,7 @@
 #include "led.h"
 
 void protocol_init() {
-    Serial.begin(115200);
+    Serial.begin(115200);  
     String input = "";
 
     while (true) {
@@ -49,5 +49,7 @@ void protocol_listen() {
             }
         //add else here for other commands when implemented
         }
+
+        led_update();
     }
 }

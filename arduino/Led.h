@@ -10,7 +10,7 @@
 #include "protocol.h"
 
 
-#define PIN 52
+#define PIN 45
 
 #define NUM_LEDS 64
 
