@@ -6,7 +6,7 @@ if __name__ == "__main__":
 
     while True:
         response = protocol.listen()
-        if response is ['error']:
+        if response is 'error':
             exit('Error in protocol')
 
         response = toggle_piece(response)
