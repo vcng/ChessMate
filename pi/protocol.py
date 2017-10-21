@@ -83,7 +83,7 @@ class Protocol:
 
             if cmd[0] == 't':                                       # t = toggle
                 cmd.pop(0)
-                return (cmd[0], cmd[1])                                  # Returns the toggled coord
+                return ( int(cmd[0]), int(cmd[1]) )                                  # Returns the toggled coord
             else:
                 return 'error'                                    # Received input not valid, send error code
 
@@ -95,7 +95,7 @@ class Protocol:
             if cmd[0] == 't':
                 cmd.pop(0)
                 print '== received command ' + cmd + ' =='
-                return (cmd[0], cmd[1])
+                return ( int(cmd[0]), int(cmd[1]) )
             else:
                 print'$$ error command not found $$'
                 return 'error'
@@ -195,10 +195,11 @@ class Protocol:
         :param debug:   If debug is set, then print debug statements.
         """
 
+        l = len(loc)
         # Check if in debug mode
         if debug is None:
             # Send an led command to arduino
-            output = ""
+            output = 'l:1:' + l + ':'
 
             for ea in loc:
                 if ea[0].isalpha():
@@ -210,12 +211,12 @@ class Protocol:
                     output += ea[0]         # row
                     output += ea[1]         # col
 
-            self.ser.write('l1' + str(output))
+            self.ser.write(str(output))
 
         # Debug mode
         else:
             print '== led on command =='
-            output = ""
+            output = 'l:1:' + l + ':'
 
             for ea in loc:
                 if ea[0].isalpha():
@@ -227,8 +228,8 @@ class Protocol:
                     output += ea[0]  # row
                     output += ea[1]  # col
 
-            print '== sending l1' + output + ' =='
-            self.ser.write('l1' + str(output))
+            print '== sending l:1:'+ l + ':' + output + ' =='
+            self.ser.write(str(output))
 
     def __led_off(self, loc, debug=None):
         """ Sends an led on command to the Arduino in the form: 'l0rc'.
@@ -239,28 +240,29 @@ class Protocol:
         :param loc:     Location of the change in the form of a tuple, where [0] is r and [1] is c.
         :param debug:   If debug is set, then print debug statements.
         """
+        l = len(loc)
 
         # Check if in debug mode
         if debug is None:
             # Send an led cmd to arduino
-            output = ""
+            output = 'l:0:' + l + ':'
 
             for ea in loc:
                 output += ea[0]  # row
                 output += ea[1]  # col
 
-            self.ser.write('l0' + str(output))
+            self.ser.write(str(output))
 
         # Debug mode
         else:
             print '== led off command =='
-            output = ""
+            output = 'l:0:' + l + ':'
 
             for ea in loc:
                 output += ea[0]  # row
                 output += ea[1]  # col
-            print '== sending l0' + output + ' =='
-            self.ser.write('l0' + str(output))
+            print '== sending l:0:'+ l +':' + output + ' =='
+            self.ser.write(str(output))
 
     def show_moves(self, loc, debug=None):
         """ Used to send led commands to the Arduino from the driver. Since this takes in a list
