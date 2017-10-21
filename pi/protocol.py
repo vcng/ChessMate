@@ -7,7 +7,7 @@ import time
 
 class Protocol:
 
-    def __init__(self, s=None, debug=None):
+    def __init__(self, s=None, debug=None, port=None):
         """ Constructor for Protocol class, sets up port for USB Serial.
         :param s: Is for starting serial.
         :param debug: If debug is set, prints debug statements.
@@ -20,15 +20,24 @@ class Protocol:
         # Check if in debug mode
         if debug is None:
 
-            # Check ports 0-9 for Arduino
-            for port in range(0, 10):
+            if port is None:
+                # Check ports 0-9 for Arduino
+                for port in range(0, 10):
+                    try:
+                        self.ser = Serial('/dev/ttyAcm%s' % port, 115200)    # Creates Serial instance
+                        if self.ser:    # If serial was created
+                            found = True    # Found the port
+                            break
+                    except Exception:
+                        pass
+            else:
                 try:
-                    self.ser = Serial('/dev/ttyAcm%s' % port, 115200)    # Creates Serial instance
-                    if self.ser:    # If serial was created
-                        found = True    # Found the port
-                        break
+                    self.ser = Serial(port, 115200)
+                    if self.ser:
+                        found = True
                 except Exception:
                     pass
+
 
             # Runs if port is found
             if found:
