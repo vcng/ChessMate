@@ -31,6 +31,9 @@ class StateMachine:
     Game state machine logic
     """
 
+    def __init__(self):
+        pass
+
     @staticmethod
     def start_game(_coord):
         """
