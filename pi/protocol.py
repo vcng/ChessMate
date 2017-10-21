@@ -1,12 +1,13 @@
 # Programmer: Miles Avelli
-# Date: 9/24/2017
+# Date: 10/20/2017
 
 from serial import*
 import time
 
-class Protocol():
 
-    def __init__(self, s, debug = None):
+class Protocol:
+
+    def __init__(self, s, debug=None):
         """ Constructor for Protocol class, sets up port for USB Serial.
         :param s: Is for starting serial.
         :param debug: If debug is set, prints debug statements.
@@ -20,7 +21,7 @@ class Protocol():
         if debug is None:
 
             # Check ports 0-9 for Arduino
-            for port in range(0,10):
+            for port in range(0, 10):
                 try:
                     self.ser = Serial('/dev/ttyAcm%s' % port, 115200)    # Creates Serial instance
                     if self.ser:    # If serial was created
@@ -33,9 +34,9 @@ class Protocol():
             if found:
                 # Loop until synced with Arduino
                 while True:
-                    self.ser.flushInput()   # Clear serial input buffer
-                    self.ser.write('start') # Send 'start' to Arduino
-                    if self.__received():   # Wait for response
+                    self.ser.flushInput()       # Clear serial input buffer
+                    self.ser.write('start')     # Send 'start' to Arduino
+                    if self.__received():       # Wait for response
                         break
             else:
                 return
@@ -69,8 +70,7 @@ class Protocol():
                 print '$$ error could not initialize $$'
                 return
 
-
-    def listen(self, debug = None):
+    def listen(self, debug=None):
         """ listen is used to poll the serial port until the Arduino sends a command and
         then returns a list with the command or an error.
         :param debug:   If debug is set, prints debug statements.
@@ -79,34 +79,26 @@ class Protocol():
 
         # Check if in debug mode
         if debug is None:
-            cmd = self.__listener()     # Call __listener to get the command from Arduino
-            cmd_list = cmd.split(' ')   # Make the received string into a list of strings split on spaces
+            cmd = self.__listener()                                 # Call __listener to get the command from Arduino
 
-            cmd = cmd_list[0]           # Make cmd the first element of cmd_list, which is the cmd name
-
-            if cmd == 't':              # t = toggle
-                return [cmd, cmd_list[1], cmd_list[2].replace("\r\n","")]   # Returns the toggled coord
+            if cmd[0] == 't':                                       # t = toggle
+                return [list(cmd)]                                  # Returns the toggled coord
             else:
-                return ['error']    # Received input not valid, send error code
+                return ['error']                                    # Received input not valid, send error code
 
         # Debug mode
         else:
             print '== starting listener =='
             cmd = self.__listener()
-            cmd_list = cmd.split(' ')
 
-            print '== received command ' + str(cmd_list[0]) + ' =='
-            cmd = cmd_list[0]
-            print '== buffer size: ' + str(self.ser.inWaiting()) + ' =='
-            if cmd == 't':
-                print '== returning toggle coord =='
-                return [cmd, cmd_list[1], str(cmd_list[2]).replace("\r\n","")]
+            if cmd[0] == 't':
+                print '== received command ' + cmd + ' =='
+                return [list(cmd)]
             else:
                 print'$$ error command not found $$'
                 return ['error']
 
-
-    def __listener(self, debug = None):
+    def __listener(self, debug=None):
         """ Helper used to retrieve serial input from Arduino, polls the serial buffer until input is detected.
         :param debug:   If debug is set, prints debug statements.
         :return:        Returns a string that was read from the Arduino over serial port.
@@ -115,8 +107,8 @@ class Protocol():
         # Check if in debug mode
         if debug is None:
             while True:
-                if self.ser.inWaiting() > 0:    # If there is something in the serial input buffer
-                    input = self.ser.readline() # Read the serial input buffer
+                if self.ser.inWaiting() > 0:        # If there is something in the serial input buffer
+                    input = self.ser.readline()     # Read the serial input buffer
                     break
             return input
 
@@ -131,7 +123,7 @@ class Protocol():
             print '== read ' + input + ' =='
             return input
 
-    def __received(self, debug = None):
+    def __received(self, debug=None):
         """
         Used for polling the Arduino for confirmation of input
         :param debug:   If debug is set, prints debug statements
@@ -141,12 +133,12 @@ class Protocol():
         # Check if in debug mode
         if debug is None:
             # Check the buffer 10 times.
-            for x in range(0,10):
+            for x in range(0, 10):
                 if self.ser.inWaiting() > 0:
                     input = self.ser.readline()
-                    if input[0] == 'g' and input[1] == 'o': # Checks the input for 'go' command
+                    if input[0] == 'g' and input[1] == 'o':     # Checks the input for 'go' command
                         return True
-                time.sleep(1) # Pause for 1 second between checks
+                time.sleep(1)                                   # Pause for 1 second between checks
 
         # Debug mode
         else:
@@ -167,8 +159,7 @@ class Protocol():
             print '$$ error __received $$'
         return False
 
-
-    def __init_arduino(self, debug = None):
+    def __init_arduino(self, debug=None):
         """ Sends the initialize command to the Arduino.
         :param debug: If debug is set, prints debug statements.
         :return:      True for successful initialization, False for failed attempt.
@@ -181,7 +172,7 @@ class Protocol():
                 return True
             return False
 
-        #Debug mode
+        # Debug mode
         else:
             print '== sending init call to arduino =='
             self.ser.write('i')
@@ -191,82 +182,90 @@ class Protocol():
             print '$$ error __init_arduino $$'
             return False
 
-    def __led_on(self, loc, debug = None):
-        """ Sends an led on command to the Arduino in the form: 'l 1 r c'.
+    def __led_on(self, loc, debug=None):
+        """ Sends an led on command to the Arduino in the form: 'l1xrc'.
         l = led command name
         1 = led on
+        x = color character
         r = row
         c = column
-        :param loc:     Location of the change in the form of a tuple, where [0] is r and [1] is c.
+        :param loc:     Locations of the changes in the form of a tuple: (color, (r, c)), if no color then white.
         :param debug:   If debug is set, then print debug statements.
-        :return:        Returns True for confirmed input, or False if something broke.
         """
 
         # Check if in debug mode
         if debug is None:
             # Send an led command to arduino
-            self.ser.write('l 1 ' + str(loc[0]) + ' ' + str(loc[1]))
+            output = ""
 
-            # Wait for a response
-            if self.__received():
-                return True
-            return False
+            for ea in loc:
+                if ea[0].isalpha():
+                    output += ea[0]         # color
+                    output += ea[1][0]      # row from tuple
+                    output += ea[1][1]      # col from tuple
+                else:
+                    output += 'w'           # default white
+                    output += ea[0]         # row
+                    output += ea[1]         # col
+
+            self.ser.write('l1' + str(output))
 
         # Debug mode
         else:
             print '== led on command =='
-            print '== sending ' + str(loc[0]) + ' ' + str(loc[1]) + ' =='
-            self.ser.write('l 1 ' + str(loc[0]) + ' ' + str(loc[1]))
-            # wait for a response
-            if self.__received(1):
-                return True
-            print '$$ error __led_on $$'
-            return False
+            output = ""
 
+            for ea in loc:
+                if ea[0].isalpha():
+                    output += ea[0]  # color
+                    output += ea[1][0]  # row from tuple
+                    output += ea[1][1]  # col from tuple
+                else:
+                    output += 'w'  # default white
+                    output += ea[0]  # row
+                    output += ea[1]  # col
 
-    def __led_off(self, loc, debug = None):
-        """ Sends an led on command to the Arduino in the form: 'l 0 r c'.
+            print '== sending l1' + output + ' =='
+            self.ser.write('l1' + str(output))
+
+    def __led_off(self, loc, debug=None):
+        """ Sends an led on command to the Arduino in the form: 'l0rc'.
         l = led command name
         0 = led off
         r = row
         c = column
         :param loc:     Location of the change in the form of a tuple, where [0] is r and [1] is c.
         :param debug:   If debug is set, then print debug statements.
-        :return:        Returns True for confirmed input, or False if something broke.
         """
 
         # Check if in debug mode
         if debug is None:
             # Send an led cmd to arduino
-            self.ser.write('l 0 ' + str(loc[0]) + ' ' + str(loc[1]))
+            output = ""
 
-            # Wait for a response
-            if self.__received():
-                return True
-            return False
+            for ea in loc:
+                output += ea[0]  # row
+                output += ea[1]  # col
+
+            self.ser.write('l0' + str(output))
 
         # Debug mode
         else:
             print '== led off command =='
-            print '== sending ' + str(loc[0]) + str(loc[1]) + ' =='
-            self.ser.write('l 0 ' + str(loc[0]) + ' ' + str(loc[1]))
-            if self.__received(1):
-                return True
-            print '$$ error __led_off $$'
-            return False
+            output = ""
 
-    ## Not defined yet
-    def invalid_move(self, loc, debug = None):
+            for ea in loc:
+                output += ea[0]  # row
+                output += ea[1]  # col
+            print '== sending l0' + output + ' =='
+            self.ser.write('l0' + str(output))
 
-        return
-
-    def light_moves(self, loc, debug = None):
+    def show_moves(self, loc, debug=None):
         """ Used to send led commands to the Arduino from the driver. Since this takes in a list
         it can be handle multiple coordinates at the same time.
         :param loc: Location of the change in the form of a list, index 0 is led on or off followed by the
-        coordinates r and c for the change.
+        coordinates list in the format: (color, (r, c)). If there is no color, then white is default.
         :param debug:   If debug is set, print debug statements.
-        :return:        Returns True for confirmed input, or False if something broke.
         """
 
         # Check if in debug mode
@@ -274,53 +273,24 @@ class Protocol():
             # If on command, use __led_on
             if loc[0] == 'on':
                 loc.pop(0)      # Delete front element, resulting in a list of coordinates only
-
-                # Iterate over the coordinates in loc, sending them to __led_on to send a command to Arduino
-                for x in range(0, len(loc)):
-                    if self.__led_on(([loc[x][0],loc[x][1]])):
-                        continue
-                    else:
-                        return False                # Broke along the way try again
-                return True                         # Led's on, return
-
+                self.__led_on(loc)
             # Else use __led_off
             else:
                 loc.pop(0)
-                for x in range(0,len(loc)):
-                    if self.__led_off(([loc[x][0], loc[x][1]])):
-                        continue
-                    else:
-                        return False
-                return True
+                self.__led_off(loc)
 
         # Debug mode
         else:
             if loc[0] == 'on':
                 loc.pop(0)
                 print '== show moves command =='
-                print '== sending locations' + loc + ' =='
-                for x in range(0, len(loc)):
-                    if self.__led_on(([loc[x][0],loc[x][1]]),1):
-                        continue
-                    else:
-                        print '$$ error show_moves $$'
-                        return False                # broke along the way try again
-                print '== all locations sent =='
-                return True
+                self.__led_on(loc)
             else:
                 loc.pop(0)
                 print '== hide moves command =='
-                print '== sending locations ' + loc + ' =='
-                for x in range(0,len(loc)):
-                    if self.__led_off(([loc[x][0], loc[x][1]]),1):
-                        continue
-                    else:
-                        print '$$ error hide_moves $$'
-                        return False  # broke along the way try again
-                print '== all locations sent =='
-                return True
+                self.__led_off(loc)
 
-    def reset_arduino(self, debug = None):
+    def reset_arduino(self, debug=None):
         """ Sends the reset command to the Arduino.
         :param debug:   If debug is set, print debug statements.
         :return:        Returns True for confirmed input, or False if something broke.
