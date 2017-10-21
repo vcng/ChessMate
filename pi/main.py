@@ -16,4 +16,5 @@ if __name__ == "__main__":
 
         print 'GOT RESPONSE #2 "', response, '"'
 
-        protocol.show_moves(response, debug=True)
+        if response is not None:
+            protocol.show_moves(response, debug=True)
