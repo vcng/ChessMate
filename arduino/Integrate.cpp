@@ -70,8 +70,7 @@ void integrate_wait_for_valid_start() {
 }
 
 //initialize definition
-void integrate_init() 
-{
+void integrate_init() {
 	for (int i = 0; i < 8; i++) {
 		pinMode(newLatchPin[i], OUTPUT);
 		pinMode(newDataPin[i], INPUT);
@@ -83,16 +82,14 @@ void integrate_init()
 }
 
 // pollHardware function definition
-void integrate_poll_hardware() 
-{
+void integrate_poll_hardware() {
 	for (int pin = 0; pin < 8; pin++) {
 	  shiftRegisterIn(newLatchPin[pin], pin);
 	}
 }
   
 // shiftRegisterIn function definition
-void shiftRegisterIn(int oe, int row) //int oe, refers to the latch pin.
-{ 
+void shiftRegisterIn(int oe, int row) { //int oe, refers to the latch pin.
 	digitalWrite(oe, 1);
 	delayMicroseconds(20);
 	digitalWrite(oe, 0);
