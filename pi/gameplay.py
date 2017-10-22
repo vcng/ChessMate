@@ -56,6 +56,12 @@ class StateMachine:
         global active_piece
         global active_location
 
+        if active_piece is not None:
+            # TODO This will allow capturing, but discards any pieces
+            # TODO that accidentally disconnect while a piece is lifted
+            # chess_board.remove_piece(coord)
+            return State.SHOWING_MOVES, None
+
         active_piece = chess_board.remove_piece(coord)
         active_location = coord
 
@@ -77,8 +83,8 @@ class StateMachine:
         positions = active_piece.get_moves(active_location, chess_board)
         chess_board.set_piece(coord, active_piece)
 
-        # TODO Only do this if the piece actually moved
-        active_piece.moved = True
+        if coord != active_location:
+            active_piece.moved = True
 
         active_piece = None
         active_location = None
