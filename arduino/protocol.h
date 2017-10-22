@@ -8,7 +8,7 @@
 void protocol_init();
 
 //Toggle command
-void protocol_toggle(int x, int y);
+void protocol_toggle(int r, int c);
 
 //Listener for recieving input from serial
 void protocol_listen();
