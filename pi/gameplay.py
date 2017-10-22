@@ -65,7 +65,7 @@ class StateMachine:
         active_piece = chess_board.remove_piece(coord)
         active_location = coord
 
-        return State.SHOWING_MOVES, ['on', active_piece.get_moves(active_location, chess_board)]
+        return State.SHOWING_MOVES, ['on', active_piece.get_moves(active_location, chess_board) + [coord]]
 
     @staticmethod
     def piece_set_down(coord):
@@ -86,10 +86,12 @@ class StateMachine:
         if coord != active_location:
             active_piece.moved = True
 
+        old_coord = active_location
+
         active_piece = None
         active_location = None
 
-        return State.WAITING_FOR_INPUT, ['off', positions]
+        return State.WAITING_FOR_INPUT, ['off', positions + [old_coord]]
 
 
 # Transitions
