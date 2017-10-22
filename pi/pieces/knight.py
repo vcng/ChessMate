@@ -14,35 +14,43 @@ class Knight:
         r, c = cord[0], cord[1]
 
         # down down right
-        if is_valid_location((r + 2, c + 1)):
+        if is_valid_location((r + 2, c + 1)) and chess_board[(r + 2, c + 1)] is None \
+                and chess_board.is_enemy((r, c), piece):
             valid_locs.append((r + 2, c + 1))
 
         # down right right
-        if is_valid_location((r + 1, c + 2)):
+        if is_valid_location((r + 1, c + 2)) and chess_board[(r + 1, c + 2)] is None \
+                and chess_board.is_enemy((r, c), piece):
             valid_locs.append((r + 1, c + 2))
 
         # up right right
-        if is_valid_location((r - 1, c + 2)):
+        if is_valid_location((r - 1, c + 2)) and chess_board[(r - 1, c + 2)] is None \
+            and chess_board.is_enemy((r, c), piece):
             valid_locs.append((r - 1, c + 2))
 
         # up up right
-        if is_valid_location((r - 2, c + 1)):
+        if is_valid_location((r - 2, c + 1)) and chess_board[(r - 2, c + 1)] is None \
+                and chess_board.is_enemy((r, c), piece):
             valid_locs.append((r - 2, c + 1))
 
         # down down left
-        if is_valid_location((r - 2, c - 1)):
+        if is_valid_location((r - 2, c - 1)) and chess_board[(r - 2, c - 1)] is None \
+                and chess_board.is_enemy((r, c), piece):
             valid_locs.append((r - 2, c - 1))
 
         # up left left
-        if is_valid_location((r - 1, c - 2)):
+        if is_valid_location((r - 1, c - 2)) and chess_board[(r - 1, c - 2)] is None \
+                and chess_board.is_enemy((r, c), piece):
             valid_locs.append((r - 1, c - 2))
 
         # down left left
-        if is_valid_location((r + 1, c - 2)):
+        if is_valid_location((r + 1, c - 2)) and chess_board[(r + 1, c - 2)] is None \
+                and chess_board.is_enemy((r, c), piece):
             valid_locs.append((r + 1, c - 2))
 
         # down down left
-        if is_valid_location((r + 2, c - 1)):
+        if is_valid_location((r + 2, c - 1)) and chess_board[(r + 2, c - 1)] is None \
+                and chess_board.is_enemy((r, c), piece):
             valid_locs.append((r + 2, c - 1))
 
         return valid_locs

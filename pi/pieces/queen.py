@@ -16,6 +16,9 @@ class Queen:
             if chess_board[(rowu, c)] is None:
                 valid_locs.append((rowu, c))
             else:
+                # check for enemy in next spot if enemy and valid location append to valid_locs
+                if chess_board.is_enemy(piece, chess_board[(rowu, c)]):
+                    valid_locs.append((rowu, c))
                 break
 
         # check vertically below queen until not valid space
@@ -24,6 +27,9 @@ class Queen:
             if chess_board[(rowd, c)] is None:
                 valid_locs.append((rowd, c))
             else:
+                # check for enemy in next spot if enemy and valid location append to valid_locs
+                if chess_board.is_enemy(piece, chess_board[(rowd, c)]):
+                    valid_locs.append((rowd, c))
                 break
 
         # check horizontally right of queen until not valid space
@@ -32,6 +38,9 @@ class Queen:
             if chess_board[(r, colr)] is None:
                 valid_locs.append((r, colr))
             else:
+                # check for enemy in next spot if enemy and valid location append to valid_locs
+                if chess_board.is_enemy(piece, chess_board[(r, colr)]):
+                    valid_locs.append((r, colr))
                 break
 
         # check horizontally left of queen until not valid space
@@ -40,6 +49,9 @@ class Queen:
             if chess_board[(r, coll)] is None:
                 valid_locs.append((r, coll))
             else:
+                # check for enemy in next spot if enemy and valid location append to valid_locs
+                if chess_board.is_enemy(piece, chess_board[(r, coll)]):
+                    valid_locs.append((r, coll))
                 break
 
         # Loop to add spaces below and to the right of the bishop
@@ -54,6 +66,9 @@ class Queen:
             if chess_board[(new_r, new_c)] is None:
                 valid_locs.append((new_r, new_c))
             else:
+                # append location if enemy can be captured
+                if chess_board.is_enemy((new_r, new_c), piece):
+                    valid_locs.append((new_r, new_c))
                 break
 
         # Loop to add spaces below and to the left of the bishop
@@ -69,6 +84,9 @@ class Queen:
             if chess_board[(new_r, new_c)] is None:
                 valid_locs.append((new_r, new_c))
             else:
+                # append location if enemy can be captured
+                if chess_board.is_enemy( (new_r, new_c), piece):
+                    valid_locs.append((new_r, new_c))
                 break
 
         # Loop to add spaces above and to the right of the bishop
@@ -83,6 +101,9 @@ class Queen:
             if chess_board[(new_r, new_c)] is None:
                 valid_locs.append((new_r, new_c))
             else:
+                # append location if enemy can be captured
+                if chess_board.is_enemy( (new_r, new_c), piece):
+                    valid_locs.append((new_r, new_c))
                 break
 
         # Loop to add spaces above and to the left of the bishop
@@ -98,6 +119,9 @@ class Queen:
             if chess_board[(new_r, new_c)] is None:
                 valid_locs.append((new_r, new_c))
             else:
+                # append location if enemy can be captured
+                if chess_board.is_enemy( (new_r, new_c), piece):
+                    valid_locs.append((new_r, new_c))
                 break
 
         return valid_locs
