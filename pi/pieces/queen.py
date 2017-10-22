@@ -17,7 +17,7 @@ class Queen:
                 valid_locs.append((rowu, c))
             else:
                 # check for enemy in next spot if enemy and valid location append to valid_locs
-                if chess_board.is_enemy(piece, chess_board[(rowu, c)]):
+                if chess_board.is_enemy((rowu, c), piece):
                     valid_locs.append((rowu, c))
                 break
 
@@ -28,7 +28,7 @@ class Queen:
                 valid_locs.append((rowd, c))
             else:
                 # check for enemy in next spot if enemy and valid location append to valid_locs
-                if chess_board.is_enemy(piece, chess_board[(rowd, c)]):
+                if chess_board.is_enemy((rowd, c), piece):
                     valid_locs.append((rowd, c))
                 break
 
@@ -39,7 +39,7 @@ class Queen:
                 valid_locs.append((r, colr))
             else:
                 # check for enemy in next spot if enemy and valid location append to valid_locs
-                if chess_board.is_enemy(piece, chess_board[(r, colr)]):
+                if chess_board.is_enemy((r, colr), piece):
                     valid_locs.append((r, colr))
                 break
 
@@ -50,7 +50,7 @@ class Queen:
                 valid_locs.append((r, coll))
             else:
                 # check for enemy in next spot if enemy and valid location append to valid_locs
-                if chess_board.is_enemy(piece, chess_board[(r, coll)]):
+                if chess_board.is_enemy((r, coll), piece):
                     valid_locs.append((r, coll))
                 break
 
@@ -102,7 +102,7 @@ class Queen:
                 valid_locs.append((new_r, new_c))
             else:
                 # append location if enemy can be captured
-                if chess_board.is_enemy( (new_r, new_c), piece):
+                if chess_board.is_enemy((new_r, new_c), piece):
                     valid_locs.append((new_r, new_c))
                 break
 

@@ -4,135 +4,119 @@
 // Source File
 
 #include "Arduino.h"
-#include "Integrate.h"
+#include "integrate.h"
+#include "protocol.h"
+#include "led.h"
 
-//Constructor definition
-Integrate::Integrate() {
-	//define pin modes
-	pinMode(this->latchPin, OUTPUT);	//shiftIn,Maw sets latchPin for OUTPUT, added this statement
-   	pinMode(this->clockPin, OUTPUT);  	//shiftIn,Maw sets clockPin for OUTPUT, added this statement
-	pinMode(this->dataPin, INPUT);	  	//shiftIn,Maw sets DataPin for INPUT,	added this statement
-}
 
-//setup definition
-bool Integrate::setup() {
-	//variable definitions
-	int check_array[8] = {255, 255, 0, 0, 0, 0, 255, 255}; // use to compare to the actual rows[i] variable to see if setup is correct
-	//end variable definitions
+//////////////////////////////////////////
+//		  PRE-DEFINED VARIABLES			//
+//////////////////////////////////////////
 
-	while (true) //if "go" is the keyword passed in through setup, do the loop
-	{
-		for (int i = 0; i <= 7; i++) // this will read in the data
-		{
-			rows[i] = shiftIn(dataPin,clockPin); //set the rows of the boards to the read switches
-		}
+// Tells the D-flip flops chips to save state for reading
+int newLatchPin[8] = {22, 23, 24, 25, 26, 27, 28, 29};
 
-		for (int check = 0; check <= 8; check++) // check to make sure all the piece are set up on the board, for each row
-		{
-			if (check == 8) // if loop ends that means the setup for the pieces on the board are all correct
-				return true;
+// These are the pins data is read from
+int newDataPin[8] = {46, 47, 48, 49, 50, 51, 52, 53};
 
-			if(int(rows[check]) != check_array[check]) // check if each of the rows are set up so to how the game should be started
-				break;
-		}
-	}
-	// end function 
-}
+// This pin is used for iterating over data
+int newClockPin = 32;			
 
-//readRows definition 
-String Integrate::readRows() {
-	String result = "";			//used for storing result of XOR
-	
-	for (int i = 0; i < 8; i++) {		//for each row in rows, XOR with sensor readings
-		result = XOR(i);		//result = XOR(index of current row)
-		return result;			//return result
-	}
-}
+// Holds the state of the board as bytes, 
+// each bit is a col in a row
+byte newBoard[64];
 
-//XOR definition
-String Integrate::XOR(int index) {
-	
-	byte temp = 0;
-	byte result = 0;
-	String coordinate = "";
-	
-	digitalWrite(this->latchPin,1);		//shiftIn,Maw tells the shift registers to save current states
-	delay(20);				//shiftIn,Maw delay for the registers to save
-	digitalWrite(this->latchPin,0);	  	//shiftIn,Maw tells the shift registers to hold data for reading
+// Backup is same as newBoard, 
+// used to compare to the state of newBoard
+byte backup[64];
 
-	temp = shiftIn(this->dataPin, this->clockPin);	//make temp hold current state on the row
-	result = temp ^ rows[index];		//XOR current(temp) and the previous (rows[index])
-	
-	if (result == 0) {			//if the result is 0 then no change has been detected
-		return "";			//return empty String
-	} else {				//a change has been found
-		rows[index] = temp;		//stores current(temp) in previously saved state (rows[index]) 
+void integrate_wait_for_valid_start() {
+	byte check_array[64] = {
+		1,1,1,1,1,1,1,1,
+		1,1,1,1,1,1,1,1,
+		0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,
+		1,1,1,1,1,1,1,1,
+		1,1,1,1,1,1,1,1
+	};
 
-		int col = 7;			//start reading col at 7, because bytes are stored in reverse index vs an array
+	while (true) {
+		integrate_poll_hardware();
 
-    		//for loop to find first (and only as of now) bit high and return the cord 
-		for (int bit = 0; bit <= 7; bit++, col--) {	
-      
-      			//if the current bit is 1
-			if (bitRead(result, bit) == 1) {			
-				coordinate += index;	//append the index, row, to the coordinate String
-				coordinate += " ";	//append a space
-				coordinate += col;	//append col, or column, to the coordinate String
-				
-        		return coordinate;		//return coordinate
+		bool valid = true;
+		for (int i = 0; i < 64; i++) {
+			if (newBoard[i] != check_array[i]) {
+				valid = false;
+				led_show_move('r', (i / 8) + '0', (i % 8) + '0');
+			} else {
+				led_show_move('g', (i / 8) + '0', (i % 8) + '0');
 			}
 		}
+
+		led_update();
+
+		if (valid) {
+			break;
+		}
 	}
+
+	for (int i = 0; i < 64; i++) {
+		led_show_move('b', (i / 8) + '0', (i % 8) + '0');
+	}
+
+	led_update();
 }
 
-//shiftIn,Maw this is the definition of the shiftIn function, only alterations are made for formatting.
+//initialize definition
+void integrate_init() {
+	for (int i = 0; i < 8; i++) {
+		pinMode(newLatchPin[i], OUTPUT);
+		pinMode(newDataPin[i], INPUT);
+	}
 
-////// ----------------------------------------shiftIn function
-///// just needs the location of the data pin and the clock pin
-///// it returns a byte with each bit in the byte corresponding
-///// to a pin on the shift register. leftBit 7 = Pin 7 / Bit 0= Pin 0
-byte Integrate::shiftIn(int myDataPin, int myClockPin) {
-  int i;
-  int temp = 0;
-  int pinState;
-  byte myDataIn = 0;
+	pinMode(newClockPin, OUTPUT);
 
-  pinMode(myClockPin, OUTPUT);
-  pinMode(myDataPin, INPUT);
+	integrate_wait_for_valid_start();
+}
 
-//we will be holding the clock pin high 8 times (0,..,7) at the
-//end of each time through the for loop
+// pollHardware function definition
+void integrate_poll_hardware() {
+	for (int pin = 0; pin < 8; pin++) {
+	  shiftRegisterIn(newLatchPin[pin], pin);
+	}
+}
+  
+// shiftRegisterIn function definition
+void shiftRegisterIn(int oe, int row) { //int oe, refers to the latch pin.
+	digitalWrite(oe, 1);
+	delayMicroseconds(20);
+	digitalWrite(oe, 0);
+  
+	digitalWrite(newClockPin, 0);
+	delayMicroseconds(20);
+	
+	// Read all 64 pins to see if they are true (1) or false (0), then set them
+	for (int pin = 0; pin < 8; pin++) {
+		if (digitalRead(newDataPin[pin])) {
+			newBoard[row * 8 + pin] = 1;
+		} else {
+			newBoard[row * 8 + pin] = 0;
+		}
 
-//at the begining of each loop when we set the clock low, it will
-//be doing the necessary low to high drop to cause the shift
-//register's DataPin to change state based on the value
-//of the next bit in its serial information flow.
-//The register transmits the information about the pins from pin 7 to pin 0
-//so that is why our function counts down
-  for (i=7; i>=0; i--) {
-    digitalWrite(myClockPin, 0);
-    delayMicroseconds(0.2);
-    temp = digitalRead(myDataPin);
-    if (temp) {
-      pinState = 1;
-      //set the bit to 0 no matter what
-      myDataIn = myDataIn | (1 << i);
-    } else {
-      //turn it off -- only necessary for debuging
-     //print statement since myDataIn starts as 0
-      pinState = 0;
-    }
-
-    //Debuging print statements
-    //Serial.print(pinState);
-    //Serial.print("     ");
-    //Serial.println (dataIn, BIN);
-
-    digitalWrite(myClockPin, 1);
-
-  }
-  //debuging print statements whitespace
-  //Serial.println();
-  //Serial.println(myDataIn, BIN);
-  return myDataIn;
+		// Check for change
+		if (newBoard[row * 8 + pin] != backup[row * 8 + pin]) {
+			protocol_toggle((row * 8 + pin) / 8, (row * 8 + pin) % 8);
+		}
+  
+		// Update the backup for future comparisons
+		backup[row * 8 + pin] = newBoard[row * 8 + pin];
+	}
+	
+	//Serial.print("\n");
+	digitalWrite(newClockPin, 1);
+	
+	// Write the latch (oe pin)
+	digitalWrite(oe, 1);
 }

@@ -1,3 +1,11 @@
+from pieces.king import King
+from pieces.queen import Queen
+from pieces.rook import Rook
+from pieces.knight import Knight
+from pieces.bishop import Bishop
+from pieces.pawn import Pawn
+
+
 class PieceType:
     """
     Enum representing all the different types of pieces
@@ -25,6 +33,35 @@ class Piece:
         self.piece_type = piece_type
         self.is_black = is_black
         self.moved = False
+
+    def get_moves(self, coord, chess_board):
+        return {
+            PieceType.KING: King,
+            PieceType.QUEEN: Queen,
+            PieceType.ROOK: Rook,
+            PieceType.KNIGHT: Knight,
+            PieceType.BISHOP: Bishop,
+            PieceType.PAWN: Pawn
+        }[self.piece_type].get_moves(coord, self, chess_board)
+
+    def __str__(self):
+        """
+        String conversion override
+        :return: String representation of the piece
+        """
+        symbol = {
+            PieceType.KING: 'K',
+            PieceType.QUEEN: 'Q',
+            PieceType.ROOK: 'R',
+            PieceType.KNIGHT: 'H',
+            PieceType.BISHOP: 'B',
+            PieceType.PAWN: 'P'
+        }[self.piece_type] or '?'
+
+        if not self.is_black:
+            symbol = symbol.lower()
+
+        return symbol
 
 
 def create_starting_layout():
@@ -75,8 +112,6 @@ class Board:
         :return: return true if its an enemy else false
         """
 
-        # row, col = coord[0], coord[1]
-
         # if there is a piece at that location and piece color is other team (black or white) return true else false
         return self.board[coord[0]][coord[1]] is not None and piece.is_black != self.board[coord[0]][coord[1]].is_black
 
@@ -107,6 +142,8 @@ class Board:
         :param coord: A 2-tuple representing the (row, col) coordinate on the board
         :return: The removed piece
         """
+        assert 0 <= coord[0] <= 7 and 0 <= coord[1] <= 7
+
         piece = self.board[coord[0]][coord[1]]
         self.board[coord[0]][coord[1]] = None
         return piece
@@ -119,6 +156,8 @@ class Board:
         :param piece: The piece to add
         :return: None
         """
+        assert 0 <= coord[0] <= 7 and 0 <= coord[1] <= 7
+
         if self.board[coord[0]][coord[1]] is not None:
             raise Exception("Attempted to set piece on coordinate %s, there already exists a piece" % coord)
 
@@ -130,6 +169,8 @@ class Board:
         :param coord: A 2-tuple representing the (row, col) coordinate on the board
         :return: The piece at the given coordinate if it exists, otherwise None
         """
+        assert 0 <= coord[0] <= 7 and 0 <= coord[1] <= 7
+
         return self.board[coord[0]][coord[1]]
 
     def __setitem__(self, coord, piece):
@@ -140,4 +181,25 @@ class Board:
         :param piece: The piece to add
         :return: None
         """
+        assert 0 <= coord[0] <= 7 and 0 <= coord[1] <= 7
+
         self.set_piece(coord, piece)
+
+    def __str__(self):
+        """
+        String conversion override
+        :return: String representation of the board
+        """
+        return self.get_string_representation([])
+
+    def get_string_representation(self, highlighted_coords):
+        output = "\t  0   1   2   3   4   5   6   7\n"
+        for i, row in enumerate(self.board):
+            output += str(i) + '\t|'
+            for j, piece in enumerate(row):
+                if (i, j) in highlighted_coords:
+                    output += '[' + str(piece or ' ') + ']|'
+                else:
+                    output += ' ' + str(piece or ' ') + ' |'
+            output += '\n'
+        return output
