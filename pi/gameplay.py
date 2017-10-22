@@ -23,6 +23,7 @@ class Event:
 chess_board = Board()
 active_piece = None
 active_location = None
+active_moves = None
 state = State.GAME_STARTING
 
 
@@ -55,17 +56,17 @@ class StateMachine:
         """
         global active_piece
         global active_location
+        global active_moves
 
         if active_piece is not None:
-            # TODO This will allow capturing, but discards any pieces
-            # TODO that accidentally disconnect while a piece is lifted
-            # chess_board.remove_piece(coord)
+            chess_board.remove_piece(coord)
             return State.SHOWING_MOVES, None
 
         active_piece = chess_board.remove_piece(coord)
         active_location = coord
+        active_moves = active_piece.get_moves(active_location, chess_board)
 
-        return State.SHOWING_MOVES, ['on', active_piece.get_moves(active_location, chess_board) + [coord]]
+        return State.SHOWING_MOVES, ['on', active_moves + [coord]]
 
     @staticmethod
     def piece_set_down(coord):
@@ -76,11 +77,12 @@ class StateMachine:
         """
         global active_piece
         global active_location
+        global active_moves
 
         if active_piece is None:
             return State.WAITING_FOR_INPUT, None
 
-        positions = active_piece.get_moves(active_location, chess_board)
+        positions = active_moves
         chess_board.set_piece(coord, active_piece)
 
         if coord != active_location:
@@ -90,6 +92,7 @@ class StateMachine:
 
         active_piece = None
         active_location = None
+        active_moves = None
 
         return State.WAITING_FOR_INPUT, ['off', positions + [old_coord]]
 
@@ -107,7 +110,7 @@ state_machine_mappings = {
 
     (State.SHOWING_MOVES, Event.START): None,
     (State.SHOWING_MOVES, Event.PICK_UP): StateMachine.piece_picked_up,
-    (State.SHOWING_MOVES, Event.SET_DOWN): StateMachine.piece_set_down
+    (State.SHOWING_MOVES, Event.SET_DOWN): StateMachine.piece_set_down,
 }
 
 
