@@ -31,25 +31,15 @@ byte newBoard[64];
 byte backup[64];
 
 void integrate_wait_for_valid_start() {
-	/*byte check_array[64] = {
-		1,1,1,1,1,1,1,1,
-		1,1,1,1,1,1,1,1,
-		0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,
-		1,1,1,1,1,1,1,1,
-		1,1,1,1,1,1,1,1};*/
-	
 	byte check_array[64] = {
+		1,1,1,1,1,1,1,1,
+		1,1,1,1,1,1,1,1,
 		0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,1
+		1,1,1,1,1,1,1,1,
+		1,1,1,1,1,1,1,1
 	};
 
 	while (true) {
@@ -119,8 +109,7 @@ void shiftRegisterIn(int oe, int row) //int oe, refers to the latch pin.
 		}
 
 		// Check for change
-		if (newBoard[row * 8 + pin] != backup[row * 8 + pin]) 
-		{
+		if (newBoard[row * 8 + pin] != backup[row * 8 + pin]) {
 			protocol_toggle((row * 8 + pin) / 8, (row * 8 + pin) % 8);
 		}
   
