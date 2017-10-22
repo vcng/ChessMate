@@ -1,3 +1,4 @@
+
 class Bishop:
     @staticmethod
     def get_moves(cord, piece, chess_board):
@@ -22,9 +23,12 @@ class Bishop:
             if chess_board[(new_r, new_c)] is None:
                 valid_locs.append((new_r, new_c))
             else:
+                # append location if enemy can be captured
+                if chess_board.is_enemy((new_r, new_c), piece):
+                    valid_locs.append((new_r, new_c))
                 break
 
-        # Loop to add spaces below and to the left of the bishop
+        # Loop to add spaces above and to the right of the bishop
         for off in range(1, 8):
             new_r = r - off
             new_c = c + off
@@ -37,9 +41,12 @@ class Bishop:
             if chess_board[(new_r, new_c)] is None:
                 valid_locs.append((new_r, new_c))
             else:
+                # append location if enemy can be captured
+                if chess_board.is_enemy((new_r, new_c), piece):
+                    valid_locs.append((new_r, new_c))
                 break
 
-        # Loop to add spaces above and to the right of the bishop
+        # Loop to add spaces below and to the left of the bishop
         for off in range(1, 8):
             new_r = r + off
             new_c = c - off
@@ -51,6 +58,9 @@ class Bishop:
             if chess_board[(new_r, new_c)] is None:
                 valid_locs.append((new_r, new_c))
             else:
+                # append location if enemy can be captured
+                if chess_board.is_enemy((new_r, new_c), piece):
+                    valid_locs.append((new_r, new_c))
                 break
 
         # Loop to add spaces above and to the left of the bishop
@@ -66,6 +76,9 @@ class Bishop:
             if chess_board[(new_r, new_c)] is None:
                 valid_locs.append((new_r, new_c))
             else:
+                # append location if enemy can be captured
+                if chess_board.is_enemy((new_r, new_c), piece):
+                    valid_locs.append((new_r, new_c))
                 break
 
         return valid_locs

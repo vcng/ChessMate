@@ -1,3 +1,6 @@
+from board import Board
+
+
 class Rook:
     @staticmethod
     def get_moves(cord, piece, chess_board):
@@ -16,6 +19,9 @@ class Rook:
             if chess_board[(rowu, c)] is None:
                 valid_locs.append((rowu, c))
             else:
+                # check for enemy in next spot if enemy and valid location append to valid_locs
+                if chess_board.is_enemy(piece, chess_board[(rowu, c)]):
+                    valid_locs.append((rowu, c))
                 break
 
         # check vertically below Rook until not valid space
@@ -24,7 +30,11 @@ class Rook:
             if chess_board[(rowd, c)] is None:
                 valid_locs.append((rowd, c))
             else:
+                # check for enemy in next spot if enemy and valid location append to valid_locs
+                if chess_board.is_enemy(piece, chess_board[(rowd, c)]):
+                    valid_locs.append((rowd, c))
                 break
+
 
         # check horizontally right of Rook until not valid space
         # colr : column right of the Rook
@@ -32,7 +42,11 @@ class Rook:
             if chess_board[(r, colr)] is None:
                 valid_locs.append((r, colr))
             else:
+                # check for enemy in next spot if enemy and valid location append to valid_locs
+                if chess_board.is_enemy(piece, chess_board[(r, colr)]):
+                    valid_locs.append((r, colr))
                 break
+
 
         # check horizontally left of Rook until not valid space
         # coll : column left of the Rook
@@ -40,6 +54,9 @@ class Rook:
             if chess_board[(r, coll)] is None:
                 valid_locs.append((r, coll))
             else:
+                # check for enemy in next spot if enemy and valid location append to valid_locs
+                if chess_board.is_enemy(piece, chess_board[(r, coll)]):
+                    valid_locs.append((r, coll))
                 break
 
         return valid_locs
