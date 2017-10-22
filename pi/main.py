@@ -1,8 +1,14 @@
+import os
+
 from protocol import Protocol
 from gameplay import *
 
 if __name__ == "__main__":
-    protocol = Protocol(port='COM5', debug=True)
+    if os.name == 'nt':
+        protocol = Protocol(port='COM5', debug=True)
+    else:
+        protocol = Protocol(debug=True)
+    
     start()
 
     while True:
