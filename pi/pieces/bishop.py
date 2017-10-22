@@ -42,7 +42,7 @@ class Bishop:
                 valid_locs.append((new_r, new_c))
             else:
                 # append location if enemy can be captured
-                if chess_board.is_enemy( (new_r, new_c), piece):
+                if chess_board.is_enemy((new_r, new_c), piece):
                     valid_locs.append((new_r, new_c))
                 break
 
@@ -59,7 +59,7 @@ class Bishop:
                 valid_locs.append((new_r, new_c))
             else:
                 # append location if enemy can be captured
-                if chess_board.is_enemy( (new_r, new_c), piece):
+                if chess_board.is_enemy((new_r, new_c), piece):
                     valid_locs.append((new_r, new_c))
                 break
 
@@ -77,7 +77,7 @@ class Bishop:
                 valid_locs.append((new_r, new_c))
             else:
                 # append location if enemy can be captured
-                if chess_board.is_enemy( (new_r, new_c), piece):
+                if chess_board.is_enemy((new_r, new_c), piece):
                     valid_locs.append((new_r, new_c))
                 break
 
