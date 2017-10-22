@@ -27,3 +27,5 @@ Make sure our custom library files are loaded into the `Arduino Studio`.
 ### 4. Plug in the power to the controller (Most likely the pi)
 
 ### 5. Begin playing
+
+This software uses code of Adafruit NeoPixel licensed under the LGPL version 3 and its source can be downloaded [here](https://github.com/adafruit/Adafruit_NeoPixel). 
