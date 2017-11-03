@@ -54,19 +54,28 @@ class StateMachine:
         :param coord: A 2-tuple representing the (row, col) coordinate on the board
         :return: New state, response
         """
-        global active_piece
-        global active_location
-        global active_moves
+        global active_piece    
+        global active_location 
+        global active_moves    
 
-        if active_piece is not None:
+        if active_piece is not None:   
             chess_board.remove_piece(coord)
             return State.SHOWING_MOVES, None
 
         active_piece = chess_board.remove_piece(coord)
         active_location = coord
         active_moves = active_piece.get_moves(active_location, chess_board)
-
-        return State.SHOWING_MOVES, ['on', active_moves + [coord]]
+        
+        #A list of 3 tuples representing (row,column,color)
+        active_moves1 = [(coord[0],coord[1],'w')] 
+        for a in active_moves:
+            if chess_board.is_enemy((a[0],a[1]), active_piece):
+                #append g
+                active_moves1.append((a[0],a[1],'g'))
+            else:
+                #append w
+                active_moves1.append((a[0],a[1],'w'))
+        return State.SHOWING_MOVES, ['on', active_moves1]
 
     @staticmethod
     def piece_set_down(coord):
@@ -146,4 +155,3 @@ def start():
 
     state, _ = state_machine_mappings[(state, Event.START)](None)
     chess_board.reset()
-

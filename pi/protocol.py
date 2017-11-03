@@ -219,10 +219,16 @@ class Protocol:
             print '>>>>>>>>>>', loc
 
             for ea in loc:
-                output += 'w'           # default white
+            #    output += 'w'           # default white
+                if ea[2] == 'g':
+                    output += 'g'
+                else:
+                    output += 'w'
+                    
                 output += str(ea[0])         # row
                 output += str(ea[1])         # col
 
+                
             self.ser.write(str(output))
 
         # Debug mode
@@ -231,10 +237,15 @@ class Protocol:
             output = 'l:1:' + str(l) + ':'
 
             for ea in loc:
-                output += 'w'  # default white
+            #    output += 'w'  # default white
+                if ea[2] == 'g':
+                    output += 'g'
+                else:
+                    output += 'w'
+                
                 output += ea[0]  # row
                 output += ea[1]  # col
-
+                    
             print '== sending l:1:'+ l + ':' + output + ' =='
             self.ser.write(str(output))
 
