@@ -67,14 +67,14 @@ class StateMachine:
         active_moves = active_piece.get_moves(active_location, chess_board)
         
         #A list of 3 tuples representing (row,column,color)
-        active_moves1 = [(coord[0],coord[1],'w')] 
+        active_moves1 = [(coord[0], coord[1], 'w')] 
         for a in active_moves:
-            if chess_board.is_enemy((a[0],a[1]), active_piece):
+            if chess_board.is_enemy((a[0], a[1]), active_piece):
                 #append g
-                active_moves1.append((a[0],a[1],'g'))
+                active_moves1.append((a[0], a[1], 'g'))
             else:
                 #append w
-                active_moves1.append((a[0],a[1],'w'))
+                active_moves1.append((a[0], a[1], 'w'))
         return State.SHOWING_MOVES, ['on', active_moves1]
 
     @staticmethod
